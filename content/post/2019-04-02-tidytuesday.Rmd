@@ -4,7 +4,7 @@ author: ~
 date: '2019-04-02'
 slug: tidytuesday
 categories: []
-tags: ['#TidyTuesday', 'rvest', 'ggplot2']
+tags: ['TidyTuesday', 'rvest', 'ggplot2']
 description: ''
 topics: []
 ---
