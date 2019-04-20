@@ -1,0 +1,290 @@
+---
+title: 'First #TidyTuesday'
+author: ~
+date: '2019-04-02'
+slug: tidytuesday
+categories: []
+tags: ['#TidyTuesday', 'rvest', 'ggplot2']
+description: ''
+topics: []
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+
+
+<div id="joining-tidytuesday" class="section level1">
+<h1>Joining #TidyTuesday</h1>
+<p>Every Tuesday, I often see submissions from the <a href="https://twitter.com/search?q=%23rstats&amp;src=tyah">#rstats</a> community on twitter about their <a href="https://twitter.com/search?q=%23TidyTuesday&amp;src=tyah">#TidyTuesday</a> projects. #TidyTuesdays are weekly data projects posted online by the R4DS (R for Data Science) community for anyone interested in working on developing their skills wrangling data within the R ecosystem. Feel free to check out the <a href="https://github.com/rfordatascience/tidytuesday">#tidytuesday</a> repository on github for more information.</p>
+<p>I felt it would be only natural for my first post to be joining this community and moving from being an observer to a participant. The data posted this week comes from city of Seattle.</p>
+</div>
+<div id="seattle-bike-counters" class="section level1">
+<h1>Seattle Bike Counters</h1>
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>“Seattle Department of Transportation has 12 bike counters (four of which also count pedestrians) located on neighborhood greenways, multi-use trails, at the Fremont Bridge and on SW Spokane Street. The counters are helping us create a ridership baseline in 2014 that can be used to assess future years and make sure our investments are helping us to reach our goal of quadrupling ridership by 2030. Read our Bicycle Master Plan to learn more about what Seattle is doing to create a citywide bicycle network.” <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02">Source</a></p>
+</div>
+<div id="what-are-we-working-with" class="section level2">
+<h2>What are we working with?</h2>
+<p>Lets grab our data, and then take a quick look at it.</p>
+<pre class="r"><code>#load data
+bike_traffic &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-04-02/bike_traffic.csv&quot;, col_types = &quot;cccnn&quot;)
+
+#first six rows
+head(bike_traffic)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+##   date            crossing                   direction bike_count ped_count
+##   &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
+## 1 01/01/2014 12:~ Broadway Cycle Track Nort~ North              0        NA
+## 2 01/01/2014 01:~ Broadway Cycle Track Nort~ North              3        NA
+## 3 01/01/2014 02:~ Broadway Cycle Track Nort~ North              0        NA
+## 4 01/01/2014 03:~ Broadway Cycle Track Nort~ North              0        NA
+## 5 01/01/2014 04:~ Broadway Cycle Track Nort~ North              0        NA
+## 6 01/01/2014 05:~ Broadway Cycle Track Nort~ North              0        NA</code></pre>
+<p>The TidyTuesday repository also provides a “data dictionary” table in their repository that defines each variable so we can have a better understanding of what we are working. Instead of recreating it from scratch, I want to attempt to scrape the information from their github page. This might be overkill for a 6 X 3 table but I have recently stumbled upon <a href="https://m-clark.github.io/webR/">Engaging the Web with R</a> by Michael Clark. In it he demonstrated pulling data from a <a href="https://en.wikipedia.org/wiki/List_of_cities,_villages,_and_townships_in_Michigan">table</a> found on Wikipedia. I was inspired to one day try it out myself and I think this is a great opportunity to implement it.</p>
+<div id="web-scrape" class="section level3">
+<h3>Web Scrape</h3>
+<div id="data-dictionary" class="section level4">
+<h4>Data Dictionary</h4>
+<div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","data":[["date","crossing","direction","bike_count","ped_count"],["date (mdy hms am/pm)","character","character","double","double"],["Date of data upload","The Street crossing/intersection","North/South/East/West - varies by crossing","Number of bikes counted for each hour window","Number of pedestrians counted for each hour window"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>variable<\/th>\n      <th>class<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-left","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="code" class="section level4">
+<h4>Code</h4>
+<pre class="r"><code>#load rvest package
+library(rvest)
+
+#Grab the link with the table you need
+page &lt;- &#39;https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02&#39;
+
+#Use read_html to read the underlying html structure and objects found on the page
+seattle_bikes &lt;- read_html(page)
+
+#Use html_table to pull all tables from page 
+dictionary &lt;- html_table(seattle_bikes)
+
+DT::datatable(dictionary[[2]], 
+              rownames = FALSE,
+              options = list(dom = &#39;t&#39;,
+                             columnDefs = list(list(className = &#39;dt-left&#39;, 
+                                                    targets = 0:2))))</code></pre>
+</div>
+</div>
+</div>
+<div id="back-to-business" class="section level2">
+<h2>Back to Business</h2>
+<p>The data set we are working with includes a date and time of when data was collection, the location of the counter, the number of bikes and pedestrians crossing counter, and what direction they are heading.</p>
+<p>While there are a lot of different analysis we can do with this data, for now I am going to just replicate some of the data visualizations composed the by Seattle Times about <a href="https://www.seattletimes.com/seattle-news/transportation/what-we-can-learn-from-seattles-bike-counter-data/">What we can learn from Seattle’s bike counter data</a>. In their report, the Seattle Times disaggregated the data to see the average bike traffic across for each crossing during different time periods.</p>
+<p>Before we clean up our data, I don’t know if you noticed but when I imported the data I manually entered the column types (except “date”, which we will fix later). When I ran the line of code as #TidyTuesday had posted, R was reading some of the columns incorrectly and returning values that I saw were highly skeptical (Good reminder always to check your raw data.).</p>
+<p>For example, our ped_count was read as boolean and my values were either “NA”, “TRUE”, or “FALSE”. Our bike_count column was read as numeric but I was getting a count range from 0-8500. I don’t know about you, but this was a red flag for me. These bike counters are collecting counts at specific locations every hour. Trying to imagine that at 4:00 am on May 30, 2018 there were 8191 bikers crossing the South Burke Gilman Trail is a little humorous.</p>
+<pre><code>## # A tibble: 1 x 5
+##   date                   crossing           direction bike_count ped_count
+##   &lt;chr&gt;                  &lt;chr&gt;              &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
+## 1 05/30/2018 04:00:00 AM Burke Gilman Trail South           8191       255</code></pre>
+<p>I think its fair to believe there are a couple of errors during data collection, but I’ve never been to Seattle so I could be wrong. While I suspect some errors, in this post I am not going to make any assumptions to filter the counts and will use the data as is. Additionally, this post is about data wrangling and replicating some data visualizations, not having the most accurate data. So lets begin setting up our data.</p>
+</div>
+</div>
+<div id="setting-up-our-data" class="section level1">
+<h1>Setting Up Our Data</h1>
+<pre class="r"><code>#load packages
+library(tidyverse) #for dplyr, ggplot2, forcats packages
+library(lubridate) #for easier work with date/times
+library(cowplot) #for arranging our ggplots
+
+#Time Interval 
+FY17_18 &lt;- interval(mdy(&quot;5/1/2017&quot;), mdy(&quot;4/30/2018&quot;))
+
+#Prep data
+btraffic &lt;- bike_traffic %&gt;% 
+  mutate(date = mdy_hms(date)) %&gt;% #fix date variable
+  filter(date %within% FY17_18) %&gt;% #latest full year of data
+  mutate(
+    mnth = factor(month(date), labels =  c(
+    &quot;January&quot;, &quot;February&quot;, &quot;March&quot;, &quot;April&quot;, &quot;May&quot;, &quot;June&quot;, &quot;July&quot;, &quot;August&quot;, 
+    &quot;September&quot;,&quot;October&quot;, &quot;November&quot;, 
+    &quot;December&quot;)),
+    wkdy = factor(wday(date), labels =  c(
+    &quot;Sunday&quot;, &quot;Monday&quot;, &quot;Tuesday&quot;,&quot;Wednesday&quot;, &quot;Thursday&quot;,&quot;Friday&quot;, 
+    &quot;Saturday&quot;)),
+    hrs = factor(hour(date))) #new time variables </code></pre>
+<div id="creating-plots" class="section level2">
+<h2>Creating Plots</h2>
+<p>For each crossing we will have the average bike traffic by:</p>
+<ol style="list-style-type: decimal">
+<li>By Year, May 2017 - April 2018</li>
+<li>By Week</li>
+<li>By Hour, During the Weekdays</li>
+<li>By Hour, During the Weekends</li>
+</ol>
+<p>There are six crossings, therefore we will have 24 plots in total. To save us from writing out the code for each individual plot we will do the following: For each plot, we will first perform our specific aggregation. Second, split our data into a list of data frames grouped by crossing. Third, we will map our ggplot2 code onto our list. Fourth, we will place the output into its own object. This object will be a list of our ggplots which we will call later to sort all our plots by crossing.</p>
+<pre class="r"><code>#By Year
+p.year &lt;- btraffic %&gt;% 
+  mutate(mnth = fct_relevel(mnth, c(&quot;May&quot;, &quot;June&quot;, &quot;July&quot;, &quot;August&quot;, 
+    &quot;September&quot;,&quot;October&quot;, &quot;November&quot;, &quot;December&quot;, &quot;January&quot;, &quot;February&quot;, 
+    &quot;March&quot;, &quot;April&quot;))) %&gt;% 
+  group_by(crossing, mnth) %&gt;% 
+  summarise(average_bike_traffic = mean(bike_count, na.rm = TRUE)) %&gt;% 
+  mutate(background = ifelse((as.numeric(mnth) %% 2) == 0, Inf, 0)) %&gt;% 
+  split(.$crossing) %&gt;% 
+  map(~ ggplot(., mapping = aes(mnth, average_bike_traffic, group = crossing)) +
+        geom_bar(aes(mnth, background), stat = &quot;identity&quot;, fill = &quot;#e7e7e7&quot;, 
+             alpha = .4, na.rm = TRUE) +
+        geom_path() +
+        scale_x_discrete(labels = c(&quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, 
+          &quot;Sep&quot;,&quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;, &quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;)) +
+        theme_minimal() +
+        theme(line = element_blank(), 
+              axis.line.x = element_line(colour = &quot;grey&quot;),
+              axis.text.y = element_blank(),
+              axis.title.y = element_blank()) +
+        labs(x = &quot;Month&quot;,
+             title = &quot;May 2017 - April 2018&quot;))  
+
+#By Day
+p.week &lt;- btraffic %&gt;% 
+  group_by(crossing, wkdy) %&gt;% 
+  summarise(average_bike_traffic = mean(bike_count, na.rm = TRUE)) %&gt;% 
+  mutate(background = ifelse((as.numeric(wkdy) %% 2) == 0, Inf, 0)) %&gt;%
+  split(.$crossing) %&gt;% 
+  map(~ ggplot(., mapping = aes(wkdy, average_bike_traffic, group = crossing)) +
+        geom_bar(aes(wkdy, background), stat = &quot;identity&quot;, fill = &quot;#e7e7e7&quot;, 
+             alpha = .4, na.rm = TRUE) +
+        geom_path() +
+        scale_x_discrete(labels = c(&quot;Sun.&quot;, &quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;&quot;,&quot;&quot;, &quot;Sat.&quot;)) +
+        theme_minimal() +
+        theme(line = element_blank(),
+              axis.text.x = element_text(size = 14),
+              axis.text.y = element_blank(),
+              axis.title = element_blank()) +
+        labs(title = &quot;Weekly&quot;))  
+
+#By Hour/Weekday
+p.weekday &lt;- btraffic %&gt;% 
+  filter(between(as.numeric(wkdy), 2, 6)) %&gt;% 
+  group_by(crossing, direction, hrs) %&gt;% 
+  summarise(average_bike_traffic = mean(bike_count, na.rm = TRUE)) %&gt;%
+  mutate(background = ifelse(between(as.numeric(hrs), 10, 18), 0, Inf)) %&gt;% 
+  split(.$crossing) %&gt;% 
+  map(~ ggplot() +
+        geom_rect(aes(xmin = 0, xmax = 9, ymin = -Inf, ymax = Inf), 
+                  fill = &quot;grey&quot;, alpha = .5) +
+        geom_rect(aes(xmin = 17, xmax = 23, ymin = -Inf, ymax = Inf), 
+                  fill = &quot;grey&quot;, alpha = .5) +
+        geom_path(., mapping = aes(as.numeric(hrs) - 1, average_bike_traffic, 
+                                   group = direction, color = direction)) +
+        scale_x_continuous(breaks = c(0:23), 
+                           labels = c(&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 
+                                      &quot;9 a.m.&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 
+                                      &quot;5 p.m.&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;)) +
+        theme_minimal() +
+        theme(line = element_blank(), 
+              axis.line.x = element_line(colour = &quot;grey&quot;),
+              axis.ticks.x = element_line(colour = &quot;grey&quot;),
+              axis.text.x = element_text(size = 12),
+              axis.text.y = element_blank(),
+              axis.title = element_blank()) +
+        labs(title = &quot;Weekdays, By the Hour&quot;)) 
+
+#By Hour/Weekend
+p.weekend &lt;- btraffic %&gt;% 
+  filter(!between(as.numeric(wkdy), 2, 6)) %&gt;% 
+  group_by(crossing, direction, hrs) %&gt;% 
+  summarise(average_bike_traffic = mean(bike_count, na.rm = TRUE)) %&gt;%
+  mutate(background = ifelse(between(as.numeric(hrs), 10, 18), 0, Inf)) %&gt;% 
+  split(.$crossing) %&gt;% 
+  map(~ ggplot() +
+        geom_rect(aes(xmin = 0, xmax = 9, ymin = -Inf, ymax = Inf), 
+                  fill = &quot;grey&quot;, alpha = .5) +
+        geom_rect(aes(xmin = 17, xmax = 23, ymin = -Inf, ymax = Inf), 
+                  fill = &quot;grey&quot;, alpha = .5) +
+        geom_path(., mapping = aes(as.numeric(hrs) - 1, average_bike_traffic, 
+                                   group = direction, color = direction)) +
+        scale_x_continuous(breaks = c(0:23), 
+                           labels = c(&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 
+                                      &quot;9 a.m.&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, 
+                                      &quot;5 p.m.&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;)) +
+        theme_minimal() +
+        theme(line = element_blank(), 
+              axis.line.x = element_line(colour = &quot;grey&quot;),
+              axis.ticks.x = element_line(colour = &quot;grey&quot;),
+              axis.text.x = element_text(size = 12),
+              axis.text.y = element_blank(),
+              axis.title = element_blank()) +
+        labs(title = &quot;Weekend, By the Hour&quot;)) </code></pre>
+<p>Now that we have our plots, we have to arrange them together.</p>
+<p>The code below are the steps used to sort our plots for each crossing but only one crossing, Broadway Cycle Track, is shown to save space in the post. The process is repeated for each crossing. The only difference is swapping out the crossing variables in our ggplot lists.</p>
+<pre class="r"><code># title
+grid_title &lt;- ggdraw() + draw_label(&quot;Average Bike Traffic&quot;, fontface = &quot;bold&quot;)
+
+# 2X2 grid of plots
+broadway &lt;- plot_grid(
+  p.year$`Broadway Cycle Track North Of E Union St`, # Replace variable &quot;Broadway...&quot; with another crossing for each ggplot2 list
+  p.week$`Broadway Cycle Track North Of E Union St`, 
+  p.weekday$`Broadway Cycle Track North Of E Union St`,
+  p.weekend$`Broadway Cycle Track North Of E Union St`,
+  ncol = 2
+)
+# add the title to grid
+plot_grid(grid_title, broadway, ncol = 1, rel_heights = c(0.1, 1))</code></pre>
+<p>Now we can sit back, view, and appreciate our plots for each crossing.</p>
+</div>
+</div>
+<div id="broadway-cycle-track-north-of-e-union-st" class="section level1">
+<h1>Broadway Cycle Track North Of E Union St</h1>
+<p><img src="/post/2019-04-02-tidytuesday_files/figure-html/broadway-1.png" width="672" /></p>
+</div>
+<div id="burke-gilman-trail" class="section level1">
+<h1>Burke Gilman Trail</h1>
+<p><img src="/post/2019-04-02-tidytuesday_files/figure-html/burke-1.png" width="672" /></p>
+</div>
+<div id="elliot-bay-trail" class="section level1">
+<h1>Elliot Bay Trail</h1>
+<p><img src="/post/2019-04-02-tidytuesday_files/figure-html/elliot-1.png" width="672" /></p>
+</div>
+<div id="th-ave-ne-greenway-at-ne-62nd-st" class="section level1">
+<h1>39th Ave NE Greenway at NE 62nd St</h1>
+<p><img src="/post/2019-04-02-tidytuesday_files/figure-html/39th-1.png" width="672" /></p>
+</div>
+<div id="mts-trail" class="section level1">
+<h1>MTS Trail</h1>
+<p><img src="/post/2019-04-02-tidytuesday_files/figure-html/mts-1.png" width="672" /></p>
+</div>
+<div id="nw-58th-st-greenway-at-22nd-ave" class="section level1">
+<h1>NW 58th St Greenway at 22nd Ave</h1>
+<p><img src="/post/2019-04-02-tidytuesday_files/figure-html/58th-1.png" width="672" /></p>
+</div>
+<div id="final-thoughts" class="section level1">
+<h1>Final Thoughts</h1>
+<div id="what-this-post-accomplished" class="section level2">
+<h2>What this post accomplished:</h2>
+<ol style="list-style-type: decimal">
+<li>Served as an opening for my first post on this site.</li>
+<li>Transitioned me from being an observer of #TidyTuesday into a participant.</li>
+<li>Allowed me to experiment and gain initial experience with web scraping data from webpages.</li>
+<li>Test my current ggplot capabilities to recreate data visualizations from a published news sources.</li>
+</ol>
+</div>
+<div id="what-i-learned-from-this-post" class="section level2">
+<h2>What I learned from this post:</h2>
+<ol style="list-style-type: decimal">
+<li>Writing this post took longer than I had originally anticipated.</li>
+<li>Ran into some conflicting formatting issues publishing this rmarkdown for this site compared to the everyday rmarkdown html template I am used to.</li>
+<li>Web scraping with rvest exposed me more to the back-end of web development.</li>
+<li>How to map ggplot2 onto a dataframe to create multiple plots that could be called individually later. Using the <em>facet</em> functions within ggplot2 would create the individual plots but I did not know how to seperate them to organize the plots by crossing instead of the ggplot object itself.</li>
+</ol>
+</div>
+<div id="how-i-will-be-move-forward" class="section level2">
+<h2>How I will be move forward:</h2>
+<ol style="list-style-type: decimal">
+<li>I will attempt to create more original content. My intentions for this post were simply to replicate the plots from Seattle Times article. However, I had issues with some of their formatting decisions. For example, they did not include numbers on their trend lines to have points of references for the average bike traffic which I also left out. (I recognize they include a description of peak bike crossings above the graphs, but in my opinion this is easy to overlook compared to when it is explicit on the plot itself.)</li>
+<li>Approach future posts with specific topics and not deviate. Looking back, I feel I got sidetracked by experimenting with web scraping. I want others and myself to be able to find and reference either ideas or code without wasting time trying to remember which post it was in.</li>
+</ol>
+</div>
+</div>

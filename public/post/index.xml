@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Will Carcamo</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 02 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>First #TidyTuesday</title>
+      <link>/2019/04/02/tidytuesday/</link>
+      <pubDate>Tue, 02 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/02/tidytuesday/</guid>
+      <description>Joining #TidyTuesdayEvery Tuesday, I often see submissions from the #rstats community on twitter about their #TidyTuesday projects. #TidyTuesdays are weekly data projects posted online by the R4DS (R for Data Science) community for anyone interested in working on developing their skills wrangling data within the R ecosystem. Feel free to check out the #tidytuesday repository on github for more information.
+I felt it would be only natural for my first post to be joining this community and moving from being an observer to a participant.</description>
+    </item>
+    
+  </channel>
+</rss>

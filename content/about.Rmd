@@ -1,0 +1,74 @@
+---
+title: "About"
+date: "2019-3-24"
+sidemenu: true
+description: A Little Introduction
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "", message = FALSE)
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+```
+
+```{r, results='hide'}
+library(tidyverse)
+library(htmltools)
+```
+
+# A New Hobby
+My name is Will.  I am not much of a programmer, but I want to be. My first exposure to programming was through R. I am trying to explore what I am capable of building through R and this site is one example of what someone can do. For me, this site is simply a place for me to track what I learn. I want a place to document my work and build a portfolio that I can reference later. 
+In essence, this is site is a blog and my progress in data analytics using R (eventually incorporating other languages for different tasks). I hope that others are able to find some use for what I post. 
+
+Since your here, let me tell you a little bit about myself. 
+
+# Los Angeles &#8594; Sacramento
+
+I currently live in Sacramento. I moved from Los Angeles at the end of the summer of 2018. (Below highlights the trip. I plan to post how I made it in a seperate post.)
+
+```{r, map}
+#Load Route Data
+load("datasets/la2sac.rdata")
+
+#Create map
+library(leaflet)
+leaflet() %>% 
+  addTiles() %>% 
+  addPolylines(lng = LA2Sac$lon, lat = LA2Sac$lat)
+```
+
+I came to Sacramento to take a position working for [LPC Consulting, Inc.](https://lpc-associates.com/) as a research associate.
+
+```{r, lpc_logo}
+div(
+  img(src = "http://lpc-associates.com/wp-content/uploads/2010/09/lpc-logo21.png", alt="LPC", style="width:200px;height;200px;"),
+  align = "center"
+)
+```
+
+LPC is a research and evaluation consulting firm. As a research associate, I provide support on multiple evaluation projects. My primary strengths lie in statistics and data analaysis. However, my work can vary from assisting on designing program evaluations, creating data collection tools, data collection, writing reports, and creating data visualizations. 
+
+# My Education & Exposure to R
+```{r, education}
+div(
+  img(src = "https://images-na.ssl-images-amazon.com/images/I/A1J8UBfeojL.png", alt="Biola", style = "width:200px;height;200px;"),
+  img(src = "http://gala.network/claremont-graduate-university/wp-content/uploads/sites/7/2015/06/CGUlogo2CI.jpg", alt="CGU", style = "width:200px;height;200px;"),
+  align = "center"
+)
+```
+
+I got my B.A. in psychology from Biola University and then I went on to get my MA in Positive Developmental Psychology & Evaluation from Claremont Graduate School. I graduated in May 2018. 
+
+It was in graduate school that I was first exposed to and began working with R. It was an alternative to SPSS for data analytics and statistics. While in school, I did not fully realize the extent of what can be accomplished through this programming language. In the few months that I have been out of school, I have gone down the R rabbit hole. 
+
+# Moving Forward
+I use R for all my data analysis but I currently don't get to spend all of my time within this environment. There is a lot I can still learn or get better at. I lack any formal computer science training, but there are many resources online that I am trying to take advantage of to program more. Nonetheless, no matter how much I read or watch, I need a place to apply it. This website is testimony to that. 
+
+I currently have a few broad goals for programming:
+
+* First, continue to get better with R programming.
+* Second, continue building this site, measured by posting at minimum once a month. 
+* Third, in the next year either contribute on someone else's R package or write my own. I don't necessarily require this to be a published project on [CRAN](https://cran.r-project.org/), but I do plan to have it posted on Github. 
+* Fourth, I want to learn other programming languages. I want to primarily get familiar with Python and SQL. I hope to 
+
+# Final Thoughts
+I don't have high expectations for this site, but if you are taking the time to be on this site all I can say is that I am grateful. I hope you find the content interesting or able to learn a couple things yourself. Additionally, I apologize if my style of writing is not clear or coherent. I am using this place as a means to strengthen my communication skills. Lastly, feel free to reach out to me if you would like to provide any feedback for anything found on this site, collaborate on a project, or just to connect with me. 

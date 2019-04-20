@@ -1,0 +1,74 @@
+---
+title: "About"
+date: "2019-3-24"
+sidemenu: true
+description: A Little Introduction
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "", message = FALSE)
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+```
+
+```{r, results='hide'}
+library(tidyverse)
+library(htmltools)
+```
+
+# A New Hobby
+My name is Will.  I am not a programmer, but I want to be. I am trying to explore what I am capable of building through the R programming language. This site is one example of what someone can do with R. For me, this site is simply a place for me to track what I learn. I want a place to document my work and build a portfolio that I can reference later. I also hope that others are able to find some use for what I post. Since your here, let me tell you a little bit about myself. 
+
+# Los Angeles &#8594; Sacramento
+
+I currently live in Sacramento. I moved from Los Angeles at the end of the summer of 2018. (Below is an interactive map that highlights the trip. I plan to post how I made it in another post.)
+
+```{r, map}
+#Load Route Data
+load("datasets/la2sac.rdata")
+
+#Create map
+library(leaflet)
+leaflet() %>% 
+  addTiles() %>% 
+  addPolylines(lng = LA2Sac$lon, lat = LA2Sac$lat)
+```
+
+I came to Sacramento to take a position working for [LPC Consulting, Inc.](https://lpc-associates.com/) as a research associate.
+
+```{r, lpc_logo}
+div(
+  img(src = "http://lpc-associates.com/wp-content/uploads/2010/09/lpc-logo21.png", alt="LPC", style="width:200px;height;200px;"),
+  align = "center"
+)
+```
+
+LPC is a research and evaluation consulting firm that works with diverse organizations located in Northern California. As a research associate, I provide support on multiple evaluation projects. My current goal within LPC is to gain more on the ground experience working with local organizations and provide insightful analytics for their data. I want to make sure statistics are used and reported properly in a manner that is easily understood by those that may not have a statistical background. However, I don't just number crunch. I also help design program evaluations, create data collection tools, manage projects, write reports, and create data visualizations. 
+
+# My Education & Exposure to R
+```{r, education}
+div(
+  img(src = "https://images-na.ssl-images-amazon.com/images/I/A1J8UBfeojL.png", alt="Biola", style = "width:200px;height;200px;"),
+  img(src = "http://gala.network/claremont-graduate-university/wp-content/uploads/sites/7/2015/06/CGUlogo2CI.jpg", alt="CGU", style = "width:200px;height;200px;"),
+  align = "center"
+)
+```
+
+I got my B.A. in psychology from Biola University and then I went on to get my MA in Positive Developmental Psychology & Evaluation from Claremont Graduate School. I graduated in May 2018. 
+
+It was in graduate school that I was first exposed to and fell in love with R. It was an alternative offered to (in my opinion, "outdated") SPSS for data analytics and statistics. While in school, I did not fully realize the extent of what can be accomplished through R. In the few months that I have been out of school, I have gone down the R rabbit hole. 
+
+# Moving Forward
+I use R for work but I don't get to spend all of my time diving into it. There is a lot I still need to learn. I lack any formal computer science training, but there are many resources online that I am trying to take advantage of to be able to program more. Nonetheless, no matter how much I read, I need a place to apply it. This website is testimony to that. 
+
+Eventually, I would like to be able to program full time. Becoming a "Data Scientist" appears to be the direction I would like to take. Until that day, I have other goals that I want to accomplish a long the way. 
+
+First, continue building this site, measured by posting at minimum once a month. 
+
+Second, in the next year either contribute on someone else's R package or write my own. I don't necessarily require this to be a published on [CRAN](https://cran.r-project.org/), but I do plan to have it posted on Github. 
+
+Third, I want to learn other programming languages. I want to primarily get familiar with Python and SQL. 
+
+# Final Thoughts
+I don't have high expectations for this site, but if you are taking the time to be on here and reading this...Thank You for being here! Additionally, feel free to reach out to me if you would like to provide any feedback for anything I post, collaborate on a project, or just connect. 
+
+Lastly, I apologize if my style of writing is not clear and coherent. I don't consider myself to be a strong writer but hope to develop my ability to communicate more effectively through these posts. 
