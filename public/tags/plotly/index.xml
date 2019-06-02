@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Plotly on Will Carcamo</title>
+    <link>/tags/plotly/</link>
+    <description>Recent content in Plotly on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 23 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/plotly/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tidy Tuesday - MyAnimeList</title>
+      <link>/2019/04/23/tidy-tuesday/</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/23/tidy-tuesday/</guid>
+      <description>MyAnimelist.netThis week TidyTuesday posted data from an anime and manga social networking and social cataloging website, MyAnimeList (MAL). This data will be interesting to examine because last summer I started watching anime shows and got hooked. I am a little embarrassed to admit it but I’ve seen a lot of different shows since then. I hope I get to find some new shows that I can watch later.</description>
+    </item>
+    
+  </channel>
+</rss>

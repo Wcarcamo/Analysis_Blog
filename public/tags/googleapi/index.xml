@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Googleapi on Will Carcamo</title>
+    <link>/tags/googleapi/</link>
+    <description>Recent content in Googleapi on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Sun, 21 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/googleapi/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Outline A Route on a Map</title>
+      <link>/2019/04/21/google-map-api/</link>
+      <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/21/google-map-api/</guid>
+      <description>Working with MapsIf you are interesting in learning about how to use R to work with geospatial data, I would first point you in the direction of reading Geocomputation in R. I previously thought that you had to use special software like ArcGIS in order to make maps but I found it not too difficult using certain R packages to make simple maps quickly.</description>
+    </item>
+    
+  </channel>
+</rss>

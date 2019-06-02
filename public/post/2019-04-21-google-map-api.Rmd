@@ -1,0 +1,64 @@
+---
+title: Outline a Route on a Map
+author: ~
+date: '2019-04-21'
+slug: google-map-api
+categories: []
+tags: ["Google API", "ggmap"]
+description: 'Example of utilizing ggmap to create a map outlining '
+topics: []
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(comment = "", message = FALSE)
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+```
+
+# Working with Maps
+
+If you are interesting in learning about how to use R to work with geospatial data, I would first point you in the direction of reading [Geocomputation in R](https://geocompr.robinlovelace.net/). I previously thought that you had to use special software like ArcGIS in order to make maps but I found it not too difficult using certain R packages to make simple maps quickly. I particularly like the **tmap** package for static maps and **leaflet** for dynamic (interactive maps). However, **tmap** has some integration with leaflet which can allow users to convert their static maps created within the tmap functions into an interactive one.
+
+# Creating the Map in the About Section 
+
+In the about page I included the following map. 
+
+```{r, map, echo=FALSE}
+#Load Route Data
+load("~/Analysis_Blog/datasets/la2sac.rdata")
+
+#Create map
+library(leaflet)
+leaflet() %>% 
+  addTiles() %>% 
+  addPolylines(lng = LA2Sac$lon, lat = LA2Sac$lat)
+```
+
+There is only two general steps in order to make it with R. The first is getting the geospatial data. The second is to map it.
+
+## Getting the Data
+
+Depending on your individual use case, you can find a lot of open source geospatial data online that will outline certain regions on a map such as state, county, or city boundaries. They are sometimes referred to as shapefiles and are basically polygons placed on a plane with a specific coordinate system. In my experience, I found that I didn't need to worry much about understanding the different coordinating systems as I was learning how to make maps. Usually, the data would have this information integrated in your file or R would understand where your spatial objects need to be placed. However, I wouldn't recommend forgetting about trying to learn about coordinate systems and expecting R to handle the data without errors. 
+
+In our case above we need specific lines (not a polygon outlining a certain region) to highlight the trip between Los Angeles and Sacramento. This is where **ggmap** is a valuable package. The **ggmap** package can use APIs from Google's map services (Find an introduction to understanding what APIs are [here](https://zapier.com/learn/apis/).) However, in order to use **ggmap** you need to register with Google to get credentials to access their services. The [ggmap](https://github.com/dkahle/ggmap) package discusses how to set this up. There are various useful API's you can use, such as *Geocoding API* (converting addresses into longitude and latitude coordinates to place them on a map). What we used was the *Directions API*. The corresponding function provided by the **ggmap** function is *trek()*
+
+```{r, data, eval=FALSE}
+#ggmap returns a dataset with the route
+dat <- trek(from = "Los Angeles, California", to = "Sacramento, California", structure = "route")
+```
+
+What *treck()* does is find all times on the road that you have to change directions to get from one place to another. Imagine if you are driving and all the times your GPS gives you directions to turn right or left. It then returns these locations into coordinate points in a dataset with 3 columns: lat, lon, route. Below are a few rows of the dataset returned. 
+
+```{r, dataset, echo=FALSE}
+knitr::kable(head(LA2Sac))
+```
+
+All we are looking for are the latitude and longitude coordinates. We will use these columns with **leaflet** to make our map. Leaflet will essential plot all the points and simply connect them. The result will be multiple small lines that will outline a route on a map similar to when you find directions on your phone. 
+
+# Plotting your map 
+
+```{r, route, eval=FALSE}
+library(leaflet)
+leaflet() %>% #initiates a leaflet html widget
+  addTiles() %>% #adds your base map 
+  addPolylines(lng = dat$lon, lat = dat$lat) #connects all the lat and lon points in a line
+```
