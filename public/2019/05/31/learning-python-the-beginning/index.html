@@ -233,7 +233,192 @@
   
 
 
+<div id="learning-python" class="section level1">
+<h1>Learning Python</h1>
+<p>I often see a debate online between Python and R as programming languages for <em>Data Science</em>. I am not interested in continueing that debate here, but rather just want to continue to learn other programming languages and have another tool available to use. I often read online Python is better for general use programming while R was developed with statisticians in mind. If that is the case I think it would be helpful to start learning Python and see where I can use it for my advantage.</p>
+</div>
+<div id="set-up-python-in-rmarkdown" class="section level1">
+<h1>Set up Python in Rmarkdown</h1>
+<p>The <strong>reticulate</strong> package helps integrate Python into your rmarkdown scripts. After loading the package, you are suggested to specify which environment to use Python. I am still confused on how exactly to do this but I found the following code to be most stable to start my script especially if I have to leave and come back later to finish it.</p>
+<pre class="r"><code>library(reticulate)
+use_virtualenv(&quot;r-reticulate&quot;)</code></pre>
+<div id="load-modules-and-data" class="section level2">
+<h2>Load Modules and Data</h2>
+<pre class="python"><code>import pandas as pd
+import numpy as np
 
+url = &#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv&#39;
+dat = pd.read_csv(url, index_col=0, )</code></pre>
+<pre class="python"><code># Stop Python from truncating number of columns
+pd.set_option(&#39;display.max_columns&#39;, None)
+pd.set_option(&#39;display.width&#39;, 1000)
+pd.set_option(&#39;precision&#39;, 2)</code></pre>
+</div>
+</div>
+<div id="previewing-the-data" class="section level1">
+<h1>Previewing the Data</h1>
+<div id="view-data-in-rstudio" class="section level2">
+<h2>View Data in Rstudio</h2>
+<pre class="r"><code>View(py$dat)</code></pre>
+</div>
+<div id="understanding-the-big-picture-of-a-dataset" class="section level2">
+<h2>Understanding the Big Picture of a Dataset</h2>
+<pre class="python"><code>dat.info() # General Info (i.e. columns, non-null entries, data types)</code></pre>
+<pre><code># &lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+# Int64Index: 129971 entries, 0 to 129970
+# Data columns (total 13 columns):
+# country                  129908 non-null object
+# description              129971 non-null object
+# designation              92506 non-null object
+# points                   129971 non-null int64
+# price                    120975 non-null float64
+# province                 129908 non-null object
+# region_1                 108724 non-null object
+# region_2                 50511 non-null object
+# taster_name              103727 non-null object
+# taster_twitter_handle    98758 non-null object
+# title                    129971 non-null object
+# variety                  129970 non-null object
+# winery                   129971 non-null object
+# dtypes: float64(1), int64(1), object(11)
+# memory usage: 13.9+ MB</code></pre>
+<pre class="python"><code>dat.head(5) # View top 5 rows of the data</code></pre>
+<pre><code>#     country                                        description                         designation  points  price           province             region_1           region_2         taster_name taster_twitter_handle                                              title         variety               winery
+# 0     Italy  Aromas include tropical fruit, broom, brimston...                        Vulkà Bianco      87    NaN  Sicily &amp; Sardinia                 Etna                NaN       Kerin O’Keefe          @kerinokeefe                  Nicosia 2013 Vulkà Bianco  (Etna)     White Blend              Nicosia
+# 1  Portugal  This is ripe and fruity, a wine that is smooth...                            Avidagos      87   15.0              Douro                  NaN                NaN          Roger Voss            @vossroger      Quinta dos Avidagos 2011 Avidagos Red (Douro)  Portuguese Red  Quinta dos Avidagos
+# 2        US  Tart and snappy, the flavors of lime flesh and...                                 NaN      87   14.0             Oregon    Willamette Valley  Willamette Valley        Paul Gregutt           @paulgwine       Rainstorm 2013 Pinot Gris (Willamette Valley)      Pinot Gris            Rainstorm
+# 3        US  Pineapple rind, lemon pith and orange blossom ...                Reserve Late Harvest      87   13.0           Michigan  Lake Michigan Shore                NaN  Alexander Peartree                   NaN  St. Julian 2013 Reserve Late Harvest Riesling ...        Riesling           St. Julian
+# 4        US  Much like the regular bottling from 2012, this...  Vintner&#39;s Reserve Wild Child Block      87   65.0             Oregon    Willamette Valley  Willamette Valley        Paul Gregutt           @paulgwine   Sweet Cheeks 2012 Vintner&#39;s Reserve Wild Child...      Pinot Noir         Sweet Cheeks</code></pre>
+<pre class="python"><code>dat.price.describe() # Describe basic statistics for numeric columns</code></pre>
+<pre><code># count    120975.00
+# mean         35.36
+# std          41.02
+# min           4.00
+# 25%          17.00
+# 50%          25.00
+# 75%          42.00
+# max        3300.00
+# Name: price, dtype: float64</code></pre>
+<pre class="python"><code>dat.country.describe() # Describe non-numeric (strings) columns </code></pre>
+<pre><code># count     129908
+# unique        43
+# top           US
+# freq       54504
+# Name: country, dtype: object</code></pre>
+<p>The <em>describe()</em> function returns certain information depending on the column type selected (i.e. integers or strings). However, using <em>describe()</em> without selecting any column prior will run <em>describe()</em> on all numeric data types only.</p>
+</div>
+</div>
+<div id="selecting-columns" class="section level1">
+<h1>Selecting Columns</h1>
+<pre class="python"><code># How to find index of a column, using region_2 as example
+dat.columns.get_loc(&#39;region_2&#39;)</code></pre>
+<pre><code># 7</code></pre>
+<pre class="python"><code>dat.country.head(5) #Select column by name</code></pre>
+<pre><code># 0       Italy
+# 1    Portugal
+# 2          US
+# 3          US
+# 4          US
+# Name: country, dtype: object</code></pre>
+<pre class="python"><code>dat[&#39;country&#39;].head(5) #Alternative to select column by name</code></pre>
+<pre><code># 0       Italy
+# 1    Portugal
+# 2          US
+# 3          US
+# 4          US
+# Name: country, dtype: object</code></pre>
+<pre class="python"><code>dat.iloc[:, 0]. head(5) #Select column by Index location</code></pre>
+<pre><code># 0       Italy
+# 1    Portugal
+# 2          US
+# 3          US
+# 4          US
+# Name: country, dtype: object</code></pre>
+<pre class="python"><code>dat.iloc[:, [4, 6, 10]].head(5) # Select multiple columns</code></pre>
+<pre><code>#    price             region_1                                              title
+# 0    NaN                 Etna                  Nicosia 2013 Vulkà Bianco  (Etna)
+# 1   15.0                  NaN      Quinta dos Avidagos 2011 Avidagos Red (Douro)
+# 2   14.0    Willamette Valley      Rainstorm 2013 Pinot Gris (Willamette Valley)
+# 3   13.0  Lake Michigan Shore  St. Julian 2013 Reserve Late Harvest Riesling ...
+# 4   65.0    Willamette Valley  Sweet Cheeks 2012 Vintner&#39;s Reserve Wild Child...</code></pre>
+<pre class="python"><code>dat.iloc[:, 1:4].head(5)# Select slice of columns</code></pre>
+<pre><code>#                                          description                         designation  points
+# 0  Aromas include tropical fruit, broom, brimston...                        Vulkà Bianco      87
+# 1  This is ripe and fruity, a wine that is smooth...                            Avidagos      87
+# 2  Tart and snappy, the flavors of lime flesh and...                                 NaN      87
+# 3  Pineapple rind, lemon pith and orange blossom ...                Reserve Late Harvest      87
+# 4  Much like the regular bottling from 2012, this...  Vintner&#39;s Reserve Wild Child Block      87</code></pre>
+<pre class="python"><code>dat.iloc[:, np.r_[2:4, 9:12]].head(5) # Combine Multiple and Slice</code></pre>
+<pre><code>#                           designation  points taster_twitter_handle                                              title         variety
+# 0                        Vulkà Bianco      87          @kerinokeefe                  Nicosia 2013 Vulkà Bianco  (Etna)     White Blend
+# 1                            Avidagos      87            @vossroger      Quinta dos Avidagos 2011 Avidagos Red (Douro)  Portuguese Red
+# 2                                 NaN      87           @paulgwine       Rainstorm 2013 Pinot Gris (Willamette Valley)      Pinot Gris
+# 3                Reserve Late Harvest      87                   NaN  St. Julian 2013 Reserve Late Harvest Riesling ...        Riesling
+# 4  Vintner&#39;s Reserve Wild Child Block      87           @paulgwine   Sweet Cheeks 2012 Vintner&#39;s Reserve Wild Child...      Pinot Noir</code></pre>
+</div>
+<div id="filter-rows" class="section level1">
+<h1>Filter Rows</h1>
+<pre class="python"><code>dat[dat[&#39;country&#39;] == &quot;US&quot;].count() # Filtering String Columns</code></pre>
+<pre><code># country                  54504
+# description              54504
+# designation              36908
+# points                   54504
+# price                    54265
+# province                 54504
+# region_1                 54226
+# region_2                 50511
+# taster_name              37730
+# taster_twitter_handle    34741
+# title                    54504
+# variety                  54504
+# winery                   54504
+# dtype: int64</code></pre>
+<pre class="python"><code>dat[dat[&#39;price&#39;] &gt; 500].count() # Filtering Strings</code></pre>
+<pre><code># country                  91
+# description              91
+# designation              47
+# points                   91
+# price                    91
+# province                 91
+# region_1                 75
+# region_2                  5
+# taster_name              87
+# taster_twitter_handle    80
+# title                    91
+# variety                  91
+# winery                   91
+# dtype: int64</code></pre>
+<pre class="python"><code>dat.query(&#39;price &gt; 500&#39;).count() # Filter by query</code></pre>
+<pre><code># country                  91
+# description              91
+# designation              47
+# points                   91
+# price                    91
+# province                 91
+# region_1                 75
+# region_2                  5
+# taster_name              87
+# taster_twitter_handle    80
+# title                    91
+# variety                  91
+# winery                   91
+# dtype: int64</code></pre>
+<pre class="python"><code>dat.query(&#39;(price &gt; 500) &amp; (country == &quot;US&quot;)&#39;).count() # Filter by more than 1 query</code></pre>
+<pre><code># country                  5
+# description              5
+# designation              5
+# points                   5
+# price                    5
+# province                 5
+# region_1                 5
+# region_2                 5
+# taster_name              3
+# taster_twitter_handle    3
+# title                    5
+# variety                  5
+# winery                   5
+# dtype: int64</code></pre>
+</div>
 
 
   

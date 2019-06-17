@@ -15,7 +15,7 @@ This week TidyTuesday posted data from an anime and manga social networking and 
 ## Data
 ```{r, setup, echo=FALSE}
 # Set up options for rmarkdown chunks
-knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE, comment = "")
 ```
 
 ```{r, data}
