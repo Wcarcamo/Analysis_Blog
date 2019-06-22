@@ -4,7 +4,7 @@ author: ~
 date: '2019-05-31'
 slug: learning-python-the-beginning
 categories: []
-tags: []
+tags: ['Python', 'Select', 'Filter', 'TidyTuesday_Python']
 description: ''
 topics: []
 ---
@@ -13,7 +13,13 @@ topics: []
 
 <div id="learning-python" class="section level1">
 <h1>Learning Python</h1>
-<p>I often see a debate online between Python and R as programming languages for <em>Data Science</em>. I am not interested in continueing that debate here, but rather just want to continue to learn other programming languages and have another tool available to use. I often read online Python is better for general use programming while R was developed with statisticians in mind. If that is the case I think it would be helpful to start learning Python and see where I can use it for my advantage.</p>
+<p>I often see a debate online between Python and R as programming languages for <em>Data Science</em>. I am not interested in continuing that debate here, but rather just want to continue to learn other programming languages and have another tool available to use. I often read online Python is better for general use programming while R was developed with statisticians in mind. If that is the case I think it would be helpful to start learning Python and see where I can use it for my advantage.</p>
+<p>In this post, I will just try to practice my typical R tidyverse workflow of:</p>
+<ol style="list-style-type: decimal">
+<li>Get Data</li>
+<li>Load needed libraries</li>
+<li>Select and filter columns.</li>
+</ol>
 </div>
 <div id="set-up-python-in-rmarkdown" class="section level1">
 <h1>Set up Python in Rmarkdown</h1>
@@ -26,7 +32,7 @@ use_virtualenv(&quot;r-reticulate&quot;)</code></pre>
 import numpy as np
 
 url = &#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv&#39;
-dat = pd.read_csv(url, index_col=0, )</code></pre>
+dat = pd.read_csv(url, index_col=0)</code></pre>
 <pre class="python"><code># Stop Python from truncating number of columns
 pd.set_option(&#39;display.max_columns&#39;, None)
 pd.set_option(&#39;display.width&#39;, 1000)

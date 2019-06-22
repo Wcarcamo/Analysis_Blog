@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pandas on Will Carcamo</title>
+    <link>/tags/pandas/</link>
+    <description>Recent content in Pandas on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 17 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/pandas/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Learning Python: Part 2</title>
+      <link>/2019/06/17/learning-python-2rmd/</link>
+      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/17/learning-python-2rmd/</guid>
+      <description>Learning PythonThis post is a continuation of a learning python. In this post, I will extend the last post and focus on tidyverse equivalents to:
+Mutate columnsSummarize data (Groupby)Pipe functions (%&amp;gt;%)Setting up Python in RmarkdownLoad Modules and Dataimport pandas as pdimport numpy as npurl = &amp;#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv&amp;#39;dat = pd.read_csv(url, index_col=0)Settings for better outputThis blog is built through the blogdown package and uses Rmarkdown files that render to HTML documents.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,87 @@
+---
+title: "Learning Python: Part 2"
+author: ~
+date: '2019-06-17'
+slug: learning-python-2Rmd
+categories: []
+tags: ["Python", "Pandas"]
+description: ''
+topics: []
+---
+
+```{r, setup, echo=FALSE}
+# Set up options for rmarkdown chunks
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#")
+```
+
+# Learning Python
+
+This post is a continuation of a learning python. In this post, I will extend the last post and focus on tidyverse equivalents to:
+
+1. Mutate columns
+2. Summarize data (Groupby)
+3. Pipe functions (**%>%**)
+
+# Setting up Python in Rmarkdown
+
+```{r, setup-python, echo=FALSE}
+library(reticulate)
+use_virtualenv("r-reticulate")
+```
+
+## Load Modules and Data
+```{python, load}
+import pandas as pd
+import numpy as np
+
+url = 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv'
+dat = pd.read_csv(url, index_col=0)
+```
+
+## Settings for better output 
+
+This blog is built through the **blogdown** package and uses Rmarkdown files that render to HTML documents. Rmarkdown files best support R output but I do not know how to best format python outputs. I get inconsistent syntax highlighting. 
+
+```{python, options}
+# Stop Python from truncating number of columns
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 1000)
+pd.set_option('precision', 2)
+```
+
+```{r, echo=FALSE, eval=FALSE}
+View(py$dat)
+```
+
+# Mutate
+
+The *assign()* function appears to be a clean way to create new variables. 
+
+```{python}
+dat.assign(value = dat.points / dat.price).head(5)
+```
+
+# Summarize (Groupby)
+
+Grouping and summarizing variables is straightforward as well. You can select which variables to group through the *groupby()* function and then perform different summary statistics. There is an *agg()* function to indicate which aggregations to perform. You can also use **numpy** functions directly like *sum()* to your grouped data. Lastly, you can use a dictionary style of input to summarize your data. I think this dictionary style format is very clean and come in handing when I need to perform various calculations on grouped data with different data types. 
+
+```{python}
+dat.groupby('country').agg('mean')
+dat.groupby('country').sum()
+dat.groupby('country').agg(['mean', 'sum']) # Multiple summary statistics
+dat.groupby('country').agg({'price': 'mean'}) # With a dictionary
+```
+
+# Chaining 
+
+Python does not appear to need actual operators to chain functions as R does with **%>%** from tidyverse's magrittr package. Python can take advantage of the dot notation and continually chain different functions as long as they are wrapped in their own parenthesis. 
+
+```{python}
+(dat.loc[:, ['country', 'variety', 'points']]  # Select columns
+    .groupby(['country', 'variety'])           # Groupby
+    .agg('mean')                               # Summary Statistic
+    .query('country == "US"')                  # Filter for US Only
+    .sort_values('points', ascending = False)  # Arrange in descending order
+    .head(10))                                 # Show top 10  
+```
+

@@ -1,13 +1,14 @@
 ---
 title: "About"
-date: "2019-3-24"
-sidemenu: true
 description: A Little Introduction
+date: "2019-3-24"
+sidemenu: yes
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, comment = "", message = FALSE)
-knitr::opts_knit$set(root.dir = normalizePath(".."))
+library(knitr)
+opts_chunk$set(echo = FALSE, comment = "", message = FALSE)
+opts_knit$set(root.dir = normalizePath(".."))
 ```
 
 ```{r, results='hide'}
@@ -38,12 +39,19 @@ leaflet() %>%
 
 I came to Sacramento to take a position working for [LPC Consulting, Inc.](https://lpc-associates.com/) as a research associate.
 
-```{r, lpc_logo}
+```{r, lpc_logo, fig.align='center'}
+include_graphics("./content/images/lpc.png")
+```
+
+
+```{r, testing_lpc}
 div(
-  img(src = "http://lpc-associates.com/wp-content/uploads/2010/09/lpc-logo21.png", alt="LPC", style="width:200px;height;200px;"),
-  align = "center"
+  img(src = "images/lpc.png", alt="lpc", style = "width:200px;height;200px;"),  align = "center"
 )
 ```
+
+
+![](../content/images/lpc.png)
 
 LPC is a research and evaluation consulting firm. As a research associate, I provide support on multiple evaluation projects. My primary strengths lie in statistics and data analaysis. However, my work can vary from assisting on designing program evaluations, creating data collection tools, data collection, writing reports, and creating data visualizations. 
 
@@ -51,7 +59,7 @@ LPC is a research and evaluation consulting firm. As a research associate, I pro
 ```{r, education}
 div(
   img(src = "https://images-na.ssl-images-amazon.com/images/I/A1J8UBfeojL.png", alt="Biola", style = "width:200px;height;200px;"),
-  img(src = "http://gala.network/claremont-graduate-university/wp-content/uploads/sites/7/2015/06/CGUlogo2CI.jpg", alt="CGU", style = "width:200px;height;200px;"),
+  img(src = "https://www.mentoroverseas.com/wp-content/uploads/logo/Claremont-Graduate-University-min_5805f1e33b663.jpg", alt="CGU", style = "width:200px;height;200px;"),
   align = "center"
 )
 ```

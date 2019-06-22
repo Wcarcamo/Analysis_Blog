@@ -4,7 +4,7 @@ author: ~
 date: '2019-05-31'
 slug: learning-python-the-beginning
 categories: []
-tags: []
+tags: ['Python', 'Select', 'Filter', 'TidyTuesday_Python']
 description: ''
 topics: []
 ---
@@ -16,7 +16,13 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#")
 
 # Learning Python
 
-I often see a debate online between Python and R as programming languages for *Data Science*. I am not interested in continueing that debate here, but rather just want to continue to learn other programming languages and have another tool available to use. I often read online Python is better for general use programming while R was developed with statisticians in mind. If that is the case I think it would be helpful to start learning Python and see where I can use it for my advantage.
+I often see a debate online between Python and R as programming languages for *Data Science*. I am not interested in continuing that debate here, but rather just want to continue to learn other programming languages and have another tool available to use. I often read online Python is better for general use programming while R was developed with statisticians in mind. If that is the case I think it would be helpful to start learning Python and see where I can use it for my advantage.
+
+In this post, I will just try to practice my typical R tidyverse workflow of:
+
+1. Get Data
+2. Load needed libraries
+3. Select and filter columns. 
 
 # Set up Python in Rmarkdown
 
@@ -33,7 +39,7 @@ import pandas as pd
 import numpy as np
 
 url = 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv'
-dat = pd.read_csv(url, index_col=0, )
+dat = pd.read_csv(url, index_col=0)
 ```
 
 ```{python, options}

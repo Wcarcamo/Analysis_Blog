@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.54.0" />
+
+  <title>Learning Python: Part 2 &middot; Will Carcamo</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/">WC</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/Wcarcamo3" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/wcarcamo" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/Wcarcamo" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Learning Python: Part 2</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>17 Jun 2019</time>
+  </div>
+
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="/tags/python">Python</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="/tags/pandas">Pandas</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+
+<div id="learning-python" class="section level1">
+<h1>Learning Python</h1>
+<p>This post is a continuation of a learning python. In this post, I will extend the last post and focus on tidyverse equivalents to:</p>
+<ol style="list-style-type: decimal">
+<li>Mutate columns</li>
+<li>Summarize data (Groupby)</li>
+<li>Pipe functions (<strong>%&gt;%</strong>)</li>
+</ol>
+</div>
+<div id="setting-up-python-in-rmarkdown" class="section level1">
+<h1>Setting up Python in Rmarkdown</h1>
+<div id="load-modules-and-data" class="section level2">
+<h2>Load Modules and Data</h2>
+<pre class="python"><code>import pandas as pd
+import numpy as np
+
+url = &#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv&#39;
+dat = pd.read_csv(url, index_col=0)</code></pre>
+</div>
+<div id="settings-for-better-output" class="section level2">
+<h2>Settings for better output</h2>
+<p>This blog is built through the <strong>blogdown</strong> package and uses Rmarkdown files that render to HTML documents. Rmarkdown files best support R output but I do not know how to best format python outputs. I get inconsistent syntax highlighting.</p>
+<pre class="python"><code># Stop Python from truncating number of columns
+pd.set_option(&#39;display.max_columns&#39;, None)
+pd.set_option(&#39;display.width&#39;, 1000)
+pd.set_option(&#39;precision&#39;, 2)</code></pre>
+</div>
+</div>
+<div id="mutate" class="section level1">
+<h1>Mutate</h1>
+<p>The <em>assign()</em> function appears to be a clean way to create new variables.</p>
+<pre class="python"><code>dat.assign(value = dat.points / dat.price).head(5)</code></pre>
+<pre><code>#     country                                        description                         designation  points  price           province             region_1           region_2         taster_name taster_twitter_handle                                              title         variety               winery  value
+# 0     Italy  Aromas include tropical fruit, broom, brimston...                        Vulkà Bianco      87    NaN  Sicily &amp; Sardinia                 Etna                NaN       Kerin O’Keefe          @kerinokeefe                  Nicosia 2013 Vulkà Bianco  (Etna)     White Blend              Nicosia    NaN
+# 1  Portugal  This is ripe and fruity, a wine that is smooth...                            Avidagos      87   15.0              Douro                  NaN                NaN          Roger Voss            @vossroger      Quinta dos Avidagos 2011 Avidagos Red (Douro)  Portuguese Red  Quinta dos Avidagos   5.80
+# 2        US  Tart and snappy, the flavors of lime flesh and...                                 NaN      87   14.0             Oregon    Willamette Valley  Willamette Valley        Paul Gregutt           @paulgwine       Rainstorm 2013 Pinot Gris (Willamette Valley)      Pinot Gris            Rainstorm   6.21
+# 3        US  Pineapple rind, lemon pith and orange blossom ...                Reserve Late Harvest      87   13.0           Michigan  Lake Michigan Shore                NaN  Alexander Peartree                   NaN  St. Julian 2013 Reserve Late Harvest Riesling ...        Riesling           St. Julian   6.69
+# 4        US  Much like the regular bottling from 2012, this...  Vintner&#39;s Reserve Wild Child Block      87   65.0             Oregon    Willamette Valley  Willamette Valley        Paul Gregutt           @paulgwine   Sweet Cheeks 2012 Vintner&#39;s Reserve Wild Child...      Pinot Noir         Sweet Cheeks   1.34</code></pre>
+</div>
+<div id="summarize-groupby" class="section level1">
+<h1>Summarize (Groupby)</h1>
+<p>Grouping and summarizing variables is straightforward as well. You can select which variables to group through the <em>groupby()</em> function and then perform different summary statistics. There is an <em>agg()</em> function to indicate which aggregations to perform. You can also use <strong>numpy</strong> functions directly like <em>sum()</em> to your grouped data. Lastly, you can use a dictionary style of input to summarize your data. I think this dictionary style format is very clean and come in handing when I need to perform various calculations on grouped data with different data types.</p>
+<pre class="python"><code>dat.groupby(&#39;country&#39;).agg(&#39;mean&#39;)</code></pre>
+<pre><code>#                         points  price
+# country                              
+# Argentina                86.71  24.51
+# Armenia                  87.50  14.50
+# Australia                88.58  35.44
+# Austria                  90.10  30.76
+# Bosnia and Herzegovina   86.50  12.50
+# Brazil                   84.67  23.77
+# Bulgaria                 87.94  14.65
+# Canada                   89.37  35.71
+# Chile                    86.49  20.79
+# China                    89.00  18.00
+# Croatia                  87.22  25.45
+# Cyprus                   87.18  16.27
+# Czech Republic           87.25  24.25
+# Egypt                    84.00    NaN
+# England                  91.58  51.68
+# France                   88.85  41.14
+# Georgia                  87.69  19.32
+# Germany                  89.85  42.26
+# Greece                   87.28  22.36
+# Hungary                  89.19  40.65
+# India                    90.22  13.33
+# Israel                   88.47  31.77
+# Italy                    88.56  39.66
+# Lebanon                  87.69  30.69
+# Luxembourg               88.67  23.33
+# Macedonia                86.83  15.58
+# Mexico                   85.26  26.79
+# Moldova                  87.20  16.75
+# Morocco                  88.57  19.50
+# New Zealand              88.30  26.93
+# Peru                     83.56  18.06
+# Portugal                 88.25  26.22
+# Romania                  86.40  15.24
+# Serbia                   87.50  24.50
+# Slovakia                 87.00  16.00
+# Slovenia                 88.07  24.81
+# South Africa             88.06  24.67
+# Spain                    87.29  28.22
+# Switzerland              88.57  85.29
+# Turkey                   88.09  24.63
+# US                       88.56  36.57
+# Ukraine                  84.07   9.21
+# Uruguay                  86.75  26.40</code></pre>
+<pre class="python"><code>dat.groupby(&#39;country&#39;).sum()</code></pre>
+<pre><code>#                          points     price
+# country                                  
+# Argentina                329499  9.21e+04
+# Armenia                     175  2.90e+01
+# Australia                206304  8.13e+04
+# Austria                  301389  8.61e+04
+# Bosnia and Herzegovina      173  2.50e+01
+# Brazil                     4403  1.12e+03
+# Bulgaria                  12399  2.06e+03
+# Canada                    22968  9.07e+03
+# Chile                    386799  9.18e+04
+# China                        89  1.80e+01
+# Croatia                    6367  1.81e+03
+# Cyprus                      959  1.79e+02
+# Czech Republic             1047  2.91e+02
+# Egypt                        84  0.00e+00
+# England                    6777  3.57e+03
+# France                  1962855  7.31e+05
+# Georgia                    7541  1.62e+03
+# Germany                  194529  8.96e+04
+# Greece                    40674  1.03e+04
+# Hungary                   13022  5.89e+03
+# India                       812  1.20e+02
+# Israel                    44678  1.55e+04
+# Italy                   1730506  6.71e+05
+# Lebanon                    3069  1.07e+03
+# Luxembourg                  532  1.40e+02
+# Macedonia                  1042  1.87e+02
+# Mexico                     5968  1.88e+03
+# Moldova                    5145  9.88e+02
+# Morocco                    2480  5.46e+02
+# New Zealand              125302  3.71e+04
+# Peru                       1337  2.89e+02
+# Portugal                 502232  1.28e+05
+# Romania                   10368  1.83e+03
+# Serbia                     1050  2.94e+02
+# Slovakia                     87  1.60e+01
+# Slovenia                   7662  1.98e+03
+# South Africa             123367  3.19e+04
+# Spain                    580031  1.85e+05
+# Switzerland                 620  5.97e+02
+# Turkey                     7928  2.22e+03
+# US                      4827077  1.98e+06
+# Ukraine                    1177  1.29e+02
+# Uruguay                    9456  2.88e+03</code></pre>
+<pre class="python"><code>dat.groupby(&#39;country&#39;).agg([&#39;mean&#39;, &#39;sum&#39;]) # Multiple summary statistics</code></pre>
+<pre><code>#                        points           price          
+#                          mean      sum   mean       sum
+# country                                                
+# Argentina               86.71   329499  24.51  9.21e+04
+# Armenia                 87.50      175  14.50  2.90e+01
+# Australia               88.58   206304  35.44  8.13e+04
+# Austria                 90.10   301389  30.76  8.61e+04
+# Bosnia and Herzegovina  86.50      173  12.50  2.50e+01
+# Brazil                  84.67     4403  23.77  1.12e+03
+# Bulgaria                87.94    12399  14.65  2.06e+03
+# Canada                  89.37    22968  35.71  9.07e+03
+# Chile                   86.49   386799  20.79  9.18e+04
+# China                   89.00       89  18.00  1.80e+01
+# Croatia                 87.22     6367  25.45  1.81e+03
+# Cyprus                  87.18      959  16.27  1.79e+02
+# Czech Republic          87.25     1047  24.25  2.91e+02
+# Egypt                   84.00       84    NaN  0.00e+00
+# England                 91.58     6777  51.68  3.57e+03
+# France                  88.85  1962855  41.14  7.31e+05
+# Georgia                 87.69     7541  19.32  1.62e+03
+# Germany                 89.85   194529  42.26  8.96e+04
+# Greece                  87.28    40674  22.36  1.03e+04
+# Hungary                 89.19    13022  40.65  5.89e+03
+# India                   90.22      812  13.33  1.20e+02
+# Israel                  88.47    44678  31.77  1.55e+04
+# Italy                   88.56  1730506  39.66  6.71e+05
+# Lebanon                 87.69     3069  30.69  1.07e+03
+# Luxembourg              88.67      532  23.33  1.40e+02
+# Macedonia               86.83     1042  15.58  1.87e+02
+# Mexico                  85.26     5968  26.79  1.88e+03
+# Moldova                 87.20     5145  16.75  9.88e+02
+# Morocco                 88.57     2480  19.50  5.46e+02
+# New Zealand             88.30   125302  26.93  3.71e+04
+# Peru                    83.56     1337  18.06  2.89e+02
+# Portugal                88.25   502232  26.22  1.28e+05
+# Romania                 86.40    10368  15.24  1.83e+03
+# Serbia                  87.50     1050  24.50  2.94e+02
+# Slovakia                87.00       87  16.00  1.60e+01
+# Slovenia                88.07     7662  24.81  1.98e+03
+# South Africa            88.06   123367  24.67  3.19e+04
+# Spain                   87.29   580031  28.22  1.85e+05
+# Switzerland             88.57      620  85.29  5.97e+02
+# Turkey                  88.09     7928  24.63  2.22e+03
+# US                      88.56  4827077  36.57  1.98e+06
+# Ukraine                 84.07     1177   9.21  1.29e+02
+# Uruguay                 86.75     9456  26.40  2.88e+03</code></pre>
+<pre class="python"><code>dat.groupby(&#39;country&#39;).agg({&#39;price&#39;: &#39;mean&#39;}) # With a dictionary</code></pre>
+<pre><code>#                         price
+# country                      
+# Argentina               24.51
+# Armenia                 14.50
+# Australia               35.44
+# Austria                 30.76
+# Bosnia and Herzegovina  12.50
+# Brazil                  23.77
+# Bulgaria                14.65
+# Canada                  35.71
+# Chile                   20.79
+# China                   18.00
+# Croatia                 25.45
+# Cyprus                  16.27
+# Czech Republic          24.25
+# Egypt                     NaN
+# England                 51.68
+# France                  41.14
+# Georgia                 19.32
+# Germany                 42.26
+# Greece                  22.36
+# Hungary                 40.65
+# India                   13.33
+# Israel                  31.77
+# Italy                   39.66
+# Lebanon                 30.69
+# Luxembourg              23.33
+# Macedonia               15.58
+# Mexico                  26.79
+# Moldova                 16.75
+# Morocco                 19.50
+# New Zealand             26.93
+# Peru                    18.06
+# Portugal                26.22
+# Romania                 15.24
+# Serbia                  24.50
+# Slovakia                16.00
+# Slovenia                24.81
+# South Africa            24.67
+# Spain                   28.22
+# Switzerland             85.29
+# Turkey                  24.63
+# US                      36.57
+# Ukraine                  9.21
+# Uruguay                 26.40</code></pre>
+</div>
+<div id="chaining" class="section level1">
+<h1>Chaining</h1>
+<p>Python does not appear to need actual operators to chain functions as R does with <strong>%&gt;%</strong> from tidyverse’s magrittr package. Python can take advantage of the dot notation and continually chain different functions as long as they are wrapped in their own parenthesis.</p>
+<pre class="python"><code>(dat.loc[:, [&#39;country&#39;, &#39;variety&#39;, &#39;points&#39;]]  # Select columns
+    .groupby([&#39;country&#39;, &#39;variety&#39;])           # Groupby
+    .agg(&#39;mean&#39;)                               # Summary Statistic
+    .query(&#39;country == &quot;US&quot;&#39;)                  # Filter for US Only
+    .sort_values(&#39;points&#39;, ascending = False)  # Arrange in descending order
+    .head(10))                                 # Show top 10  </code></pre>
+<pre><code>#                                         points
+# country variety                               
+# US      Syrah-Petit Verdot                94.0
+#         Moscato Giallo                    94.0
+#         Riesling-Chardonnay               94.0
+#         Touriga Nacional Blend            93.0
+#         Tannat-Syrah                      93.0
+#         Sauvignon Gris                    92.0
+#         Malbec-Cabernet Sauvignon         92.0
+#         White Port                        92.0
+#         Tempranillo-Cabernet Sauvignon    92.0
+#         Chardonnay-Albariño               91.5</code></pre>
+</div>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2019/05/31/learning-python-the-beginning/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2019/05/31/learning-python-the-beginning/">Learning Python: The Beginning</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'wcarcamo';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'Your Google Analytics tracking ID', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+
