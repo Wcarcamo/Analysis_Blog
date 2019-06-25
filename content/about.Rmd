@@ -41,7 +41,7 @@ I came to Sacramento to take a position working for [LPC Consulting, Inc.](https
 
 ```{r, lpc}
 div(
-  img(src = "images/lpc.png", alt="lpc", style = "width:200px;height;200px;"),  align = "center"
+  img(src = "https://i.postimg.cc/YS7X6Lxg/lpc.png", alt="lpc", style = "width:200px;height;200px;"),  align = "center"
 )
 ```
 

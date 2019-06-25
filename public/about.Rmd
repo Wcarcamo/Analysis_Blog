@@ -39,19 +39,11 @@ leaflet() %>%
 
 I came to Sacramento to take a position working for [LPC Consulting, Inc.](https://lpc-associates.com/) as a research associate.
 
-```{r, lpc_logo, fig.align='center'}
-include_graphics("./content/images/lpc.png")
-```
-
-
-```{r, testing_lpc}
+```{r, lpc}
 div(
-  img(src = "images/lpc.png", alt="lpc", style = "width:200px;height;200px;"),  align = "center"
+  img(src = "https://i.postimg.cc/YS7X6Lxg/lpc.png", alt="lpc", style = "width:200px;height;200px;"),  align = "center"
 )
 ```
-
-
-![](../content/images/lpc.png)
 
 LPC is a research and evaluation consulting firm. As a research associate, I provide support on multiple evaluation projects. My primary strengths lie in statistics and data analaysis. However, my work can vary from assisting on designing program evaluations, creating data collection tools, data collection, writing reports, and creating data visualizations. 
 
