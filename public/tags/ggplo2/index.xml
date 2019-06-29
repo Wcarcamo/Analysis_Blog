@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ggplo2 on Will Carcamo</title>
+    <link>/tags/ggplo2/</link>
+    <description>Recent content in Ggplo2 on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/ggplo2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Special ggplot2 Variables</title>
+      <link>/2019/06/25/special-ggplot2-variables/</link>
+      <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/25/special-ggplot2-variables/</guid>
+      <description>knitr::opts_chunk$set(warning = FALSE, message = FALSE)Stat GeomsGenerate Data# Load tidyverselibrary(tidyverse)# Random Variablesx1 &amp;lt;- floor(runif(100, 1, 35))y1 &amp;lt;- floor(runif(100, 1, 15))# Data.framedat &amp;lt;- data.frame(x1, y1)# Make it tidy Datadat &amp;lt;- dat %&amp;gt;% gather(key = &amp;quot;Variable&amp;quot;, value = &amp;quot;Value&amp;quot;)Blank Boxplotblank_boxplot &amp;lt;- ggplot(dat, aes(x = Variable, y = Value)) +geom_boxplot(aes(color = Variable)) +scale_y_continuous(breaks = seq(0, 35, 5)) +scale_color_manual(values = c(&amp;quot;#295D6E&amp;quot;, &amp;quot;#FDA52E&amp;quot;)) +coord_flip() + theme_classic() +theme(axis.</description>
+    </item>
+    
+  </channel>
+</rss>

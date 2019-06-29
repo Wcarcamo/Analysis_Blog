@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.54.0" />
 
-  <title>Posts &middot; Will Carcamo</title>
+  <title>Ggplo2 &middot; Will Carcamo</title>
 
   
   
@@ -40,7 +40,7 @@
 
  
   
-  <link rel="alternate" type="application/rss+xml" title="Will Carcamo" href="/post/index.xml" />
+  <link rel="alternate" type="application/rss+xml" title="Will Carcamo" href="/tags/ggplo2/index.xml" />
   
 
   
@@ -101,7 +101,7 @@
 
     
     <li class="pure-menu-item">
-      <a class="pure-menu-link" href="/post/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      <a class="pure-menu-link" href="/tags/ggplo2/index.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
     </li>
     
 
@@ -210,32 +210,56 @@
 
 
 <div class="header">
-  <h1>Posts</h1>
+  <h1>Ggplo2</h1>
 </div>
+
 <div class="content">
   
-  <h2>2019</h2>
-  <ul>
-  
-    <li><time>25 Jun 2019</time> - <a href="/2019/06/25/special-ggplot2-variables/">Special ggplot2 Variables</a></li>
+    <article>
+  <header>
+    <h2><a href="/2019/06/25/special-ggplot2-variables/">Special ggplot2 Variables</a></h2>
+
+    <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>25 Jun 2019</time>
+  </div>
 
   
-    <li><time>17 Jun 2019</time> - <a href="/2019/06/17/learning-python-2rmd/">Learning Python: Part 2</a></li>
 
   
-    <li><time>31 May 2019</time> - <a href="/2019/05/31/learning-python-the-beginning/">Learning Python: The Beginning</a></li>
+  
+  
+  
 
   
-    <li><time>23 Apr 2019</time> - <a href="/2019/04/23/tidy-tuesday/">Tidy Tuesday - MyAnimeList</a></li>
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="/tags/ggplo2">ggplo2</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  </header>
+
+  <p>
+  knitr::opts_chunk$set(warning = FALSE, message = FALSE)Stat GeomsGenerate Data# Load tidyverselibrary(tidyverse)# Random Variablesx1 &lt;- floor(runif(100, 1, 35))y1 &lt;- floor(runif(100, 1, 15))# Data.framedat &lt;- data.frame(x1, y1)# Make it tidy Datadat &lt;- dat %&gt;% gather(key = &quot;Variable&quot;, value = &quot;Value&quot;)Blank Boxplotblank_boxplot &lt;- ggplot(dat, aes(x = Variable, y = Value)) +geom_boxplot(aes(color = Variable)) +scale_y_continuous(breaks = seq(0, 35, 5)) +scale_color_manual(values = c(&quot;#295D6E&quot;, &quot;#FDA52E&quot;)) +coord_flip() + theme_classic() +theme(axis.
+  </p>
 
   
-    <li><time>21 Apr 2019</time> - <a href="/2019/04/21/google-map-api/">Outline a Route on a Map</a></li>
-
+  <footer>
+    <a href="/2019/06/25/special-ggplot2-variables/">Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
+  </footer>
   
-    <li><time>02 Apr 2019</time> - <a href="/2019/04/02/tidytuesday/">First #TidyTuesday</a></li>
+</article>
 
-  
-  </ul>
   
 </div>
 
@@ -263,4 +287,3 @@
 
 </body>
 </html>
-
