@@ -5,6 +5,12 @@ date: "2019-3-24"
 sidemenu: yes
 ---
 
+<style>
+.leaflet {
+    margin: auto;
+}
+</style>
+
 ```{r setup, include=FALSE}
 library(knitr)
 opts_chunk$set(echo = FALSE, comment = "", message = FALSE)
@@ -17,14 +23,12 @@ library(htmltools)
 ```
 
 # A New Hobby
-My name is Will.  I am not much of a programmer, but I want to be. My first exposure to programming was through R. I am trying to explore what I am capable of building through R and this site is one example of what someone can do. For me, this site is simply a place for me to track what I learn. I want a place to document my work and build a portfolio that I can reference later. 
-In essence, this is site is a blog and my progress in data analytics using R (eventually incorporating other languages for different tasks). I hope that others are able to find some use for what I post. 
-
-Since your here, let me tell you a little bit about myself. 
+My name is Will. I am not much of a programmer, but I am working on it. The first programming language I learned was R. I am trying to explore what I am capable of building with R and this site is one example of what someone can do. For me, this site is simply a place for me to track what I learn. I want a place to document my work and build a portfolio that I can reference later. 
+In essence, this is site is a blog and my progress with programming and data analytics using R. Eventually I want plan to branch out and incorporate other  languages for different tasks. I also hope others can find my random posts to be useful.  
 
 # Los Angeles &#8594; Sacramento
 
-I currently live in Sacramento. I moved from Los Angeles at the end of the summer of 2018. (Below highlights the trip. I plan to post how I made it in a seperate post.)
+I currently live in Sacramento. I moved from Los Angeles at the end of the summer of 2018. 
 
 ```{r, map}
 #Load Route Data
@@ -45,7 +49,7 @@ div(
 )
 ```
 
-LPC is a research and evaluation consulting firm. As a research associate, I provide support on multiple evaluation projects. My primary strengths lie in statistics and data analaysis. However, my work can vary from assisting on designing program evaluations, creating data collection tools, data collection, writing reports, and creating data visualizations. 
+LPC is a research and evaluation consulting firm. As a research associate, I provide support on multiple evaluation projects. My primary strengths lie in statistics and data analysis. However, my work can vary from assisting design program evaluations, create data collection tools, monitor data collection, write reports, and create data visualizations. 
 
 # My Education & Exposure to R
 ```{r, education}
@@ -56,19 +60,19 @@ div(
 )
 ```
 
-I got my B.A. in psychology from Biola University and then I went on to get my MA in Positive Developmental Psychology & Evaluation from Claremont Graduate School. I graduated in May 2018. 
+I got my B.A. in psychology from Biola University went on to get my M.A. in Positive Developmental Psychology & Evaluation from Claremont Graduate School. I graduated in May 2018. 
 
-It was in graduate school that I was first exposed to and began working with R. It was an alternative to SPSS for data analytics and statistics. While in school, I did not fully realize the extent of what can be accomplished through this programming language. In the few months that I have been out of school, I have gone down the R rabbit hole. 
+I was first exposed to R in graduate school. It was an alternative to SPSS for our statistic courses. While in school, I did not fully realize the extent of what can be accomplished through this language. In the months that followed my time after CGU, I have gone down the R rabbit hole. 
 
 # Moving Forward
-I use R for all my data analysis but I currently don't get to spend all of my time within this environment. There is a lot I can still learn or get better at. I lack any formal computer science training, but there are many resources online that I am trying to take advantage of to program more. Nonetheless, no matter how much I read or watch, I need a place to apply it. This website is testimony to that. 
+I use R for all my data analytical work but I currently don't get to spend all of my time in this environment. There is a lot I can still learn or get better at. I lack any formal computer science training, but there are many resources online that I am taking advantage of and learn more about programming. But no matter how much I read or watch videos, I need a place to apply it. This website is testimony to that. 
 
 I currently have a few broad goals for programming:
 
-* First, continue to get better with R programming.
-* Second, continue building this site, measured by posting at minimum once a month. 
-* Third, in the next year either contribute on someone else's R package or write my own. I don't necessarily require this to be a published project on [CRAN](https://cran.r-project.org/), but I do plan to have it posted on Github. 
+* First, continue to get better with R.
+* Second, continue building this site.
+* Third, in the next year either contribute on someone else's R package or write my own. I don't require this to be a published project on [CRAN](https://cran.r-project.org/), but I do plan to have it posted on Github. 
 * Fourth, I want to learn other programming languages. I want to primarily get familiar with Python and SQL. 
 
 # Final Thoughts
-I don't have high expectations for this site, but if you are taking the time to be on this site all I can say is that I am grateful. I hope you find the content interesting or able to learn a couple things yourself. Additionally, I apologize if my style of writing is not clear or coherent. I am using this place as a means to strengthen my communication skills. Lastly, feel free to reach out to me if you would like to provide any feedback on anything in this site, collaborate on a project, or just to connect with me. 
+I don't have high expectations for this site, but if you are taking the time to be on this site all I can say is that I am grateful. I hope you find the content interesting or able to learn a couple things yourself. Lastly, feel free to reach out to me if you would like to provide any feedback on this site, typos, suggest content, collaborate on a project, or just to connect with me. 
