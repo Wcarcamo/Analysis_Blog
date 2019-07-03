@@ -21,7 +21,7 @@ paginate = 10
   # Shown in the home page
   subtitle = "Data Analytics"
   brand = "WC"
-  googleAnalytics = "Your Google Analytics tracking ID"
+  googleAnalytics = "UA-143012087-1"
   disqus = "wcarcamo"
   # CSS name for highlight.js
   highlightjs = "androidstudio"
