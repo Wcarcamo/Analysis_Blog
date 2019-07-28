@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2019. All rights reserved.</copyright>
-    <lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 20 Jul 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Building Dashboards with Flexdashboard</title>
+      <link>/2019/07/20/building-dashboards-with-flexdashboard/</link>
+      <pubDate>Sat, 20 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/07/20/building-dashboards-with-flexdashboard/</guid>
+      <description>DashboardsThe package flexdashboard makes it easy to create dashboards. I used the mtcars dataset to create an example of a dashboard.
+I first tried to host the dashboard embedded within this post but the output in the YAML is set to call flexdashboard instead of the html output file even though the flexdashboard produces the dashboard in html. When I first tried to host the dashboard here the format was thrown off.</description>
+    </item>
     
     <item>
       <title>Special ggplot2 Variables</title>

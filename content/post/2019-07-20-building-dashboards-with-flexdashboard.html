@@ -1,0 +1,93 @@
+---
+title: Building Dashboards with Flexdashboard
+author: ~
+date: '2019-07-20'
+slug: building-dashboards-with-flexdashboard
+categories: []
+tags: ['dashboard']
+description: ''
+topics: []
+---
+
+
+
+<div id="dashboards" class="section level1">
+<h1>Dashboards</h1>
+<p>The package <a href="https://rmarkdown.rstudio.com/flexdashboard/">flexdashboard</a> makes it easy to create dashboards. I used the <em>mtcars</em> dataset to create an example of a dashboard.</p>
+<p>I first tried to host the dashboard embedded within this post but the output in the YAML is set to call flexdashboard instead of the html output file even though the flexdashboard produces the dashboard in html. When I first tried to host the dashboard here the format was thrown off.</p>
+<p>I then searched for other ways to host this dashboard and found an interesting website called <a href="drv.tw">DriveToWeb</a>. You can upload website files onto your google drive and use drive to host static websites. Since this dashboard is only one stand alone file it was easy to upload and set up to start being hosted on my google drive.</p>
+<p><a href="https://lm2udfmm07jjlwe9jmupwg-on.drv.tw/Analysis_Blog/7-20-19_mtcars_Dashboard_Example/">View Dashboard Here!</a></p>
+</div>
+<div id="flexdashboard-example" class="section level1">
+<h1>Flexdashboard Example</h1>
+<div id="yaml" class="section level2">
+<h2>YAML</h2>
+<pre class="r"><code>---
+title: &quot;Dashboard: mtcars Dataset&quot;
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---</code></pre>
+</div>
+<div id="load-packages-clean-data" class="section level2">
+<h2>Load Packages Clean Data</h2>
+<pre class="r"><code>library(flexdashboard)
+library(tidyverse)
+library(plotly)
+dat &lt;- mtcars %&gt;% 
+  mutate(cars = rownames(.)) %&gt;% 
+  select(12, 1:11) %&gt;% 
+  mutate(cars = fct_reorder(cars, mpg),
+    cyl = factor(cyl, levels = c(4, 6, 8)),
+    vs = factor(vs, levels = c(0, 1), labels = c(&quot;V-shaped&quot;, &quot;Straight&quot;)))</code></pre>
+</div>
+<div id="flexdashboard-settings" class="section level2">
+<h2>Flexdashboard Settings</h2>
+<p>This code below is done outside of code chunks. Section titles start with level 3 headers.</p>
+<div id="first-column-settings" class="section level3">
+<h3>First Column Settings</h3>
+<pre><code>Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Fuel Efficiency</code></pre>
+<pre class="r"><code># This is an R chunk
+dotplot &lt;- ggplot(dat) +
+  geom_segment(aes(x = mpg, y = cars, xend = 0, yend = cars)) +
+  geom_point(aes(mpg, cars), size = 4, color = &quot;#2780e3&quot;) +
+  scale_x_continuous(name = &quot;Miles Per Gallon&quot;, limits = c(0, 35), 
+                     expand = c(0, 0)) +
+  labs(y = &quot;&quot;) +
+  theme_classic() + 
+  theme(axis.line.y = element_blank(),
+    axis.ticks.y = element_blank())
+
+ggplotly(dotplot)</code></pre>
+</div>
+<div id="second-column-settings" class="section level3">
+<h3>Second Column Settings</h3>
+<pre><code>Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Horsepower by # of Cylinders</code></pre>
+<pre class="r"><code># R Chunk
+hp_boxplot &lt;- ggplot(dat) +
+  geom_boxplot(aes(x = cyl, y = hp)) +
+  labs(y = &quot;Horsepower&quot;, x = &quot;Cylinders&quot;) +
+  coord_flip() +
+  theme_classic()
+
+ggplotly(hp_boxplot)</code></pre>
+<pre><code>### Horsepower &amp; Quarter-Mile Time by Engine Type</code></pre>
+<pre class="r"><code># R Chunk
+qmt &lt;- ggplot(dat) +
+  geom_point(aes(hp, qsec, color = vs, text = cars)) +
+  labs(x = &quot;Horsepower&quot;, y = &quot;Quarter-Mile Time in Seconds (Lower is Faster)&quot;, 
+    color = &quot;Engine Type&quot;) +
+  scale_color_manual(values = c(&quot;#2780e3&quot;, &quot;#D3D3D3&quot;)) +
+  theme_classic() 
+
+ggplotly(qmt)</code></pre>
+</div>
+</div>
+</div>

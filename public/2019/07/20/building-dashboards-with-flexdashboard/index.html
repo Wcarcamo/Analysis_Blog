@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.54.0" />
+
+  <title>Building Dashboards with Flexdashboard &middot; Will Carcamo</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/">WC</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/Wcarcamo3" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/wcarcamo" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/Wcarcamo" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Building Dashboards with Flexdashboard</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>20 Jul 2019</time>
+  </div>
+
+  
+
+  
+  
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="/tags/dashboard">dashboard</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+
+<div id="dashboards" class="section level1">
+<h1>Dashboards</h1>
+<p>The package <a href="https://rmarkdown.rstudio.com/flexdashboard/">flexdashboard</a> makes it easy to create dashboards. I used the <em>mtcars</em> dataset to create an example of a dashboard.</p>
+<p>I first tried to host the dashboard embedded within this post but the output in the YAML is set to call flexdashboard instead of the html output file even though the flexdashboard produces the dashboard in html. When I first tried to host the dashboard here the format was thrown off.</p>
+<p>I then searched for other ways to host this dashboard and found an interesting website called <a href="drv.tw">DriveToWeb</a>. You can upload website files onto your google drive and use drive to host static websites. Since this dashboard is only one stand alone file it was easy to upload and set up to start being hosted on my google drive.</p>
+<p><a href="https://lm2udfmm07jjlwe9jmupwg-on.drv.tw/Analysis_Blog/7-20-19_mtcars_Dashboard_Example/">View Dashboard Here!</a></p>
+</div>
+<div id="flexdashboard-example" class="section level1">
+<h1>Flexdashboard Example</h1>
+<div id="yaml" class="section level2">
+<h2>YAML</h2>
+<pre class="r"><code>---
+title: &quot;Dashboard: mtcars Dataset&quot;
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---</code></pre>
+</div>
+<div id="load-packages-clean-data" class="section level2">
+<h2>Load Packages Clean Data</h2>
+<pre class="r"><code>library(flexdashboard)
+library(tidyverse)
+library(plotly)
+dat &lt;- mtcars %&gt;% 
+  mutate(cars = rownames(.)) %&gt;% 
+  select(12, 1:11) %&gt;% 
+  mutate(cars = fct_reorder(cars, mpg),
+    cyl = factor(cyl, levels = c(4, 6, 8)),
+    vs = factor(vs, levels = c(0, 1), labels = c(&quot;V-shaped&quot;, &quot;Straight&quot;)))</code></pre>
+</div>
+<div id="flexdashboard-settings" class="section level2">
+<h2>Flexdashboard Settings</h2>
+<p>This code below is done outside of code chunks. Section titles start with level 3 headers.</p>
+<div id="first-column-settings" class="section level3">
+<h3>First Column Settings</h3>
+<pre><code>Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Fuel Efficiency</code></pre>
+<pre class="r"><code># This is an R chunk
+dotplot &lt;- ggplot(dat) +
+  geom_segment(aes(x = mpg, y = cars, xend = 0, yend = cars)) +
+  geom_point(aes(mpg, cars), size = 4, color = &quot;#2780e3&quot;) +
+  scale_x_continuous(name = &quot;Miles Per Gallon&quot;, limits = c(0, 35), 
+                     expand = c(0, 0)) +
+  labs(y = &quot;&quot;) +
+  theme_classic() + 
+  theme(axis.line.y = element_blank(),
+    axis.ticks.y = element_blank())
+
+ggplotly(dotplot)</code></pre>
+</div>
+<div id="second-column-settings" class="section level3">
+<h3>Second Column Settings</h3>
+<pre><code>Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Horsepower by # of Cylinders</code></pre>
+<pre class="r"><code># R Chunk
+hp_boxplot &lt;- ggplot(dat) +
+  geom_boxplot(aes(x = cyl, y = hp)) +
+  labs(y = &quot;Horsepower&quot;, x = &quot;Cylinders&quot;) +
+  coord_flip() +
+  theme_classic()
+
+ggplotly(hp_boxplot)</code></pre>
+<pre><code>### Horsepower &amp; Quarter-Mile Time by Engine Type</code></pre>
+<pre class="r"><code># R Chunk
+qmt &lt;- ggplot(dat) +
+  geom_point(aes(hp, qsec, color = vs, text = cars)) +
+  labs(x = &quot;Horsepower&quot;, y = &quot;Quarter-Mile Time in Seconds (Lower is Faster)&quot;, 
+    color = &quot;Engine Type&quot;) +
+  scale_color_manual(values = c(&quot;#2780e3&quot;, &quot;#D3D3D3&quot;)) +
+  theme_classic() 
+
+ggplotly(qmt)</code></pre>
+</div>
+</div>
+</div>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2019/06/25/special-ggplot2-variables/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2019/06/25/special-ggplot2-variables/">Special ggplot2 Variables</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'wcarcamo';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-143012087-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+

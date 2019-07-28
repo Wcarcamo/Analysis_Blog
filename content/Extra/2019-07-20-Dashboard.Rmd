@@ -1,0 +1,66 @@
+---
+title: "Dashboard: mtcars Dataset"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+dat <- mtcars %>% 
+  mutate(cars = rownames(.)) %>% 
+  select(12, 1:11) %>% 
+  mutate(cars = fct_reorder(cars, mpg),
+    cyl = factor(cyl, levels = c(4, 6, 8)),
+    vs = factor(vs, levels = c(0, 1), labels = c("V-shaped", "Straight")))
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Fuel Efficiency
+
+```{r}
+dotplot <- ggplot(dat) +
+  geom_segment(aes(x = mpg, y = cars, xend = 0, yend = cars)) +
+  geom_point(aes(mpg, cars), size = 4, color = "#2780e3") +
+  scale_x_continuous(name = "Miles Per Gallon", limits = c(0, 35), expand = c(0, 0)) +
+  labs(y = "") +
+  theme_classic() + 
+  theme(axis.line.y = element_blank(),
+    axis.ticks.y = element_blank())
+
+ggplotly(dotplot)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Horsepower by # of Cylinders
+
+```{r}
+hp_boxplot <- ggplot(dat) +
+  geom_boxplot(aes(x = cyl, y = hp)) +
+  labs(y = "Horsepower", x = "Cylinders") +
+  coord_flip() +
+  theme_classic()
+
+ggplotly(hp_boxplot)
+```
+
+### Horsepower & Quarter-Mile Time by Engine Type
+
+```{r}
+qmt <- ggplot(dat) +
+  geom_point(aes(hp, qsec, color = vs, text = cars)) +
+  labs(x = "Horsepower", y = "Quarter-Mile Time in Seconds (Lower is Faster)", 
+    color = "Engine Type") +
+  scale_color_manual(values = c("#2780e3", "#D3D3D3")) +
+  theme_classic() 
+
+ggplotly(qmt)
+```
+

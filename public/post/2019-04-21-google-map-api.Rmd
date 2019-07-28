@@ -24,7 +24,7 @@ In the about page I included the following map.
 
 ```{r, map, echo=FALSE}
 #Load Route Data
-load("~/Analysis_Blog/datasets/la2sac.rdata")
+load(here::here("datasets", "la2sac.rdata"))
 
 #Create map
 library(leaflet)

@@ -1,0 +1,110 @@
+---
+title: Building Dashboards with Flexdashboard
+author: ~
+date: '2019-07-20'
+slug: building-dashboards-with-flexdashboard
+categories: []
+tags: ['dashboard']
+description: ''
+topics: []
+---
+
+# Dashboards
+
+The package [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) makes it easy to create dashboards. I used the *mtcars* dataset to create an example of a dashboard. 
+
+I first tried to host the dashboard embedded within this post but the output in the YAML is set to call flexdashboard instead of the html output file even though the flexdashboard produces the dashboard in html. When I first tried to host the dashboard here the format was thrown off. 
+
+I then searched for other ways to host this dashboard and found an interesting website called [DriveToWeb](drv.tw). You can upload website files onto your google drive and use drive to host static websites. Since this dashboard is only one stand alone file it was easy to upload and set up to start being hosted on my google drive. 
+
+[View Dashboard Here!](https://lm2udfmm07jjlwe9jmupwg-on.drv.tw/Analysis_Blog/7-20-19_mtcars_Dashboard_Example/)
+
+# Flexdashboard Example
+
+## YAML
+```{r, eval=FALSE}
+---
+title: "Dashboard: mtcars Dataset"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+```
+
+## Load Packages Clean Data
+
+```{r setup, eval=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+dat <- mtcars %>% 
+  mutate(cars = rownames(.)) %>% 
+  select(12, 1:11) %>% 
+  mutate(cars = fct_reorder(cars, mpg),
+    cyl = factor(cyl, levels = c(4, 6, 8)),
+    vs = factor(vs, levels = c(0, 1), labels = c("V-shaped", "Straight")))
+```
+
+## Flexdashboard Settings
+
+This code below is done outside of code chunks. Section titles start with level 3 headers.
+
+### First Column Settings
+
+```
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Fuel Efficiency
+```
+
+```{r, eval=FALSE}
+# This is an R chunk
+dotplot <- ggplot(dat) +
+  geom_segment(aes(x = mpg, y = cars, xend = 0, yend = cars)) +
+  geom_point(aes(mpg, cars), size = 4, color = "#2780e3") +
+  scale_x_continuous(name = "Miles Per Gallon", limits = c(0, 35), 
+                     expand = c(0, 0)) +
+  labs(y = "") +
+  theme_classic() + 
+  theme(axis.line.y = element_blank(),
+    axis.ticks.y = element_blank())
+
+ggplotly(dotplot)
+```
+
+### Second Column Settings
+```
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Horsepower by # of Cylinders
+```
+
+```{r, eval=FALSE}
+# R Chunk
+hp_boxplot <- ggplot(dat) +
+  geom_boxplot(aes(x = cyl, y = hp)) +
+  labs(y = "Horsepower", x = "Cylinders") +
+  coord_flip() +
+  theme_classic()
+
+ggplotly(hp_boxplot)
+```
+
+```
+### Horsepower & Quarter-Mile Time by Engine Type
+```
+
+```{r, eval=FALSE}
+# R Chunk
+qmt <- ggplot(dat) +
+  geom_point(aes(hp, qsec, color = vs, text = cars)) +
+  labs(x = "Horsepower", y = "Quarter-Mile Time in Seconds (Lower is Faster)", 
+    color = "Engine Type") +
+  scale_color_manual(values = c("#2780e3", "#D3D3D3")) +
+  theme_classic() 
+
+ggplotly(qmt)
+```
