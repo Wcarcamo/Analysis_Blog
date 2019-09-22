@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Statistics on Will Carcamo</title>
+    <link>/tags/statistics/</link>
+    <description>Recent content in Statistics on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Sun, 22 Sep 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/statistics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Resampling Spurious Correlations</title>
+      <link>/2019/09/22/correlation-resampling/</link>
+      <pubDate>Sun, 22 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/22/correlation-resampling/</guid>
+      <description>BackgroundI don’t remember when I first heard of Nassim N. Taleb, but I started reading his work a little more than a year ago. I usually struggle to understand some of his ideas or technical work but his work has personally been hard to shake off. I keep returning to his work and over time they tend to start making more and more sense the more I study them.</description>
+    </item>
+    
+  </channel>
+</rss>

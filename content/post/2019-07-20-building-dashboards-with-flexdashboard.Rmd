@@ -15,7 +15,7 @@ The package [flexdashboard](https://rmarkdown.rstudio.com/flexdashboard/) makes 
 
 I first tried to host the dashboard embedded within this post but the output in the YAML is set to call flexdashboard instead of the html output file even though the flexdashboard produces the dashboard in html. When I first tried to host the dashboard here the format was thrown off. 
 
-I then searched for other ways to host this dashboard and found an interesting website called [DriveToWeb](drv.tw). You can upload website files onto your google drive and use drive to host static websites. Since this dashboard is only one stand alone file it was easy to upload and set up to start being hosted on my google drive. 
+I then searched for other ways to host this dashboard and found an interesting website called [DriveToWeb](https://drv.tw). You can upload website files onto your google drive and use drive to host static websites. Since this dashboard is only one stand alone file it was easy to upload and set up to start being hosted on my google drive. 
 
 [View Dashboard Here!](https://lm2udfmm07jjlwe9jmupwg-on.drv.tw/Analysis_Blog/7-20-19_mtcars_Dashboard_Example/)
 
