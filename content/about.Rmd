@@ -41,7 +41,7 @@ leaflet() %>%
   addPolylines(lng = LA2Sac$lon, lat = LA2Sac$lat)
 ```
 
-I came to Sacramento to take a position working for [LPC Consulting, Inc.](https://lpc-associates.com/) as a research associate.
+I came to Sacramento to take a position working for [LPC Consulting, Inc.](https://lpc-associates.com/){target="_blank"} as a research associate.
 
 ```{r, lpc}
 div(
@@ -71,7 +71,7 @@ I currently have a few broad goals for programming:
 
 * First, continue to get better with R.
 * Second, continue building this site.
-* Third, in the next year either contribute on someone else's R package or write my own. I don't require this to be a published project on [CRAN](https://cran.r-project.org/), but I do plan to have it posted on Github. 
+* Third, in the next year either contribute on someone else's R package or write my own. I don't require this to be a published project on [CRAN](https://cran.r-project.org/){target="_blank"}, but I do plan to have it posted on Github. 
 * Fourth, I want to learn other programming languages. I want to primarily get familiar with Python and SQL. 
 
 # Final Thoughts

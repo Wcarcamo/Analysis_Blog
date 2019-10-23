@@ -10,7 +10,7 @@ topics: []
 ---
 
 # MyAnimelist.net
-This week TidyTuesday posted data from an anime and manga social networking and social cataloging website, MyAnimeList (MAL). This data will be interesting to examine because last summer I started watching anime shows and got hooked. I am a little embarrassed to admit it but I've seen a lot of different shows since then. I hope I get to find some new shows that I can watch later.
+This week TidyTuesday posted data from an anime and manga social networking and social cataloging website, [MyAnimeList](https://myanimelist.net/){target="_blank"} (MAL). This data will be interesting to examine because last summer I started watching anime shows and got hooked. I am a little embarrassed to admit it but I've seen a lot of different shows since then. I hope I get to find some new shows that I can watch later.
 
 ## Data
 ```{r, setup, echo=FALSE}
@@ -136,7 +136,7 @@ htmltools::div(plotly::ggplotly(pop_fav), align="center")
 
 Surprisingly only one of the top 100 animes is still currently airing. What is more surprising is that the same anime has more than 800 episodes. I am curious to check it out but worried that if I like it there will be a never ending storyline. 
 
-I used the **plotly** package for the plot above to help provide readers with more information about the anime when you hover your mouse over each point, called the tooltip. This does not require a lot of extra code (code provided at the end of post) to make your ggplot more informative without cluttering your graph, but it is confusing the first time. There is a great resource for learning how to make interactive plots efficiently with **plotly** [here](https://plotly-r.com/index.html).
+I used the **plotly** package for the plot above to help provide readers with more information about the anime when you hover your mouse over each point, called the tooltip. This does not require a lot of extra code (code provided at the end of post) to make your ggplot more informative without cluttering your graph, but it is confusing the first time. There is a great resource for learning how to make interactive plots efficiently with **plotly** [here](https://plotly-r.com/index.html){target="_blank"}.
 
 ## I've <span style="color: #67A9CF">watched</span> only 4 of the top 20 ranked animes. 
 
