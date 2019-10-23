@@ -22,14 +22,14 @@ topics: []
 
 <div id="joining-tidytuesday" class="section level1">
 <h1>Joining #TidyTuesday</h1>
-<p>Every Tuesday, I often see submissions from the <a href="https://twitter.com/search?q=%23rstats&amp;src=tyah">#rstats</a> community on twitter about their <a href="https://twitter.com/search?q=%23TidyTuesday&amp;src=tyah">#TidyTuesday</a> projects. #TidyTuesdays are weekly data projects posted online by the R4DS (R for Data Science) community for anyone interested in working on developing their skills wrangling data within the R ecosystem. Feel free to check out the <a href="https://github.com/rfordatascience/tidytuesday">#tidytuesday</a> repository on github for more information.</p>
+<p>Every Tuesday, I often see submissions from the <a href="https://twitter.com/search?q=%23rstats&amp;src=tyah" target="_blank">#rstats</a> community on twitter about their <a href="https://twitter.com/search?q=%23TidyTuesday&amp;src=tyah" target="_blank">#TidyTuesday</a> projects. #TidyTuesdays are weekly data projects posted online by the R4DS (R for Data Science) community for anyone interested in working on developing their skills wrangling data within the R ecosystem. Feel free to check out the <a href="https://github.com/rfordatascience/tidytuesday" target="_blank">#tidytuesday</a> repository on github for more information.</p>
 <p>I felt it would be only natural for my first post to be joining this community and moving from being an observer to a participant. The data posted this week comes from city of Seattle.</p>
 </div>
 <div id="seattle-bike-counters" class="section level1">
 <h1>Seattle Bike Counters</h1>
 <div id="background" class="section level2">
 <h2>Background</h2>
-<p>“Seattle Department of Transportation has 12 bike counters (four of which also count pedestrians) located on neighborhood greenways, multi-use trails, at the Fremont Bridge and on SW Spokane Street. The counters are helping us create a ridership baseline in 2014 that can be used to assess future years and make sure our investments are helping us to reach our goal of quadrupling ridership by 2030. Read our Bicycle Master Plan to learn more about what Seattle is doing to create a citywide bicycle network.” <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02">Source</a></p>
+<p>“Seattle Department of Transportation has 12 bike counters (four of which also count pedestrians) located on neighborhood greenways, multi-use trails, at the Fremont Bridge and on SW Spokane Street. The counters are helping us create a ridership baseline in 2014 that can be used to assess future years and make sure our investments are helping us to reach our goal of quadrupling ridership by 2030. Read our Bicycle Master Plan to learn more about what Seattle is doing to create a citywide bicycle network.” <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02" target="_blank">Source</a></p>
 </div>
 <div id="what-are-we-working-with" class="section level2">
 <h2>What are we working with?</h2>
@@ -48,11 +48,12 @@ head(bike_traffic)</code></pre>
 ## 4 01/01/2014 03:~ Broadway Cycle Track Nort~ North              0        NA
 ## 5 01/01/2014 04:~ Broadway Cycle Track Nort~ North              0        NA
 ## 6 01/01/2014 05:~ Broadway Cycle Track Nort~ North              0        NA</code></pre>
-<p>The TidyTuesday repository also provides a “data dictionary” table in their repository that defines each variable so we can have a better understanding of what we are working. Instead of recreating it from scratch, I want to attempt to scrape the information from their github page. This might be overkill for a 6 X 3 table but I have recently stumbled upon <a href="https://m-clark.github.io/webR/">Engaging the Web with R</a> by Michael Clark. In it he demonstrated pulling data from a <a href="https://en.wikipedia.org/wiki/List_of_cities,_villages,_and_townships_in_Michigan">table</a> found on Wikipedia. I was inspired to one day try it out myself and I think this is a great opportunity to implement it.</p>
+<p>The TidyTuesday repository also provides a “data dictionary” table in their repository that defines each variable so we can have a better understanding of what we are working. Instead of recreating it from scratch, I want to attempt to scrape the information from their github page. This might be overkill for a 6 X 3 table but I have recently stumbled upon <a href="https://m-clark.github.io/webR/" target="_blank">Engaging the Web with R</a> by Michael Clark. In it he demonstrated pulling data from a <a href="https://en.wikipedia.org/wiki/List_of_cities,_villages,_and_townships_in_Michigan" target="_blank">table</a> found on Wikipedia. I was inspired to one day try it out myself and I think this is a great opportunity to implement it.</p>
 <div id="web-scrape" class="section level3">
 <h3>Web Scrape</h3>
 <div id="data-dictionary" class="section level4">
 <h4>Data Dictionary</h4>
+<pre><code>## Warning: package &#39;xml2&#39; was built under R version 3.6.1</code></pre>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","data":[["date","crossing","direction","bike_count","ped_count"],["date (mdy hms am/pm)","character","character","double","double"],["Date of data upload","The Street crossing/intersection","North/South/East/West - varies by crossing","Number of bikes counted for each hour window","Number of pedestrians counted for each hour window"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>variable<\/th>\n      <th>class<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-left","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -81,7 +82,7 @@ DT::datatable(dictionary[[2]],
 <div id="back-to-business" class="section level2">
 <h2>Back to Business</h2>
 <p>The data set we are working with includes a date and time of when data was collection, the location of the counter, the number of bikes and pedestrians crossing counter, and what direction they are heading.</p>
-<p>While there are a lot of different analysis we can do with this data, for now I am going to just replicate some of the data visualizations composed the by Seattle Times about <a href="https://www.seattletimes.com/seattle-news/transportation/what-we-can-learn-from-seattles-bike-counter-data/">What we can learn from Seattle’s bike counter data</a>. In their report, the Seattle Times disaggregated the data to see the average bike traffic across for each crossing during different time periods.</p>
+<p>While there are a lot of different analysis we can do with this data, for now I am going to just replicate some of the data visualizations composed the by Seattle Times about <a href="https://www.seattletimes.com/seattle-news/transportation/what-we-can-learn-from-seattles-bike-counter-data/" target="_blank">What we can learn from Seattle’s bike counter data</a>. In their report, the Seattle Times disaggregated the data to see the average bike traffic across for each crossing during different time periods.</p>
 <p>Before we clean up our data, I don’t know if you noticed but when I imported the data I manually entered the column types (except “date”, which we will fix later). When I ran the line of code as #TidyTuesday had posted, R was reading some of the columns incorrectly and returning values that I saw were highly skeptical (Good reminder always to check your raw data.).</p>
 <p>For example, our ped_count was read as boolean and my values were either “NA”, “TRUE”, or “FALSE”. Our bike_count column was read as numeric but I was getting a count range from 0-8500. I don’t know about you, but this was a red flag for me. These bike counters are collecting counts at specific locations every hour. Trying to imagine that at 4:00 am on May 30, 2018 there were 8191 bikers crossing the South Burke Gilman Trail is a little humorous.</p>
 <pre><code>## # A tibble: 1 x 5
@@ -94,11 +95,13 @@ DT::datatable(dictionary[[2]],
 <div id="setting-up-our-data" class="section level1">
 <h1>Setting Up Our Data</h1>
 <pre class="r"><code>#load packages
-library(tidyverse) #for dplyr, ggplot2, forcats packages
-library(lubridate) #for easier work with date/times
-library(cowplot) #for arranging our ggplots
-
-#Time Interval 
+library(tidyverse) #for dplyr, ggplot2, forcats packages</code></pre>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.6.1</code></pre>
+<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.6.1</code></pre>
+<pre class="r"><code>library(lubridate) #for easier work with date/times
+library(cowplot) #for arranging our ggplots</code></pre>
+<pre><code>## Warning: package &#39;cowplot&#39; was built under R version 3.6.1</code></pre>
+<pre class="r"><code>#Time Interval 
 FY17_18 &lt;- interval(mdy(&quot;5/1/2017&quot;), mdy(&quot;4/30/2018&quot;))
 
 #Prep data

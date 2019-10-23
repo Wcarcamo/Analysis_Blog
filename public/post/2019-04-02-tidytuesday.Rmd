@@ -11,7 +11,7 @@ topics: []
 
 # Joining #TidyTuesday
 
-Every Tuesday, I often see submissions from the [#rstats](https://twitter.com/search?q=%23rstats&src=tyah) community on twitter about their [#TidyTuesday](https://twitter.com/search?q=%23TidyTuesday&src=tyah) projects. #TidyTuesdays are weekly data projects posted online by the R4DS (R for Data Science) community for anyone interested in working on developing their skills wrangling data within the R ecosystem. Feel free to check out the [#tidytuesday](https://github.com/rfordatascience/tidytuesday) repository on github for more information. 
+Every Tuesday, I often see submissions from the [#rstats](https://twitter.com/search?q=%23rstats&src=tyah){target="_blank"} community on twitter about their [#TidyTuesday](https://twitter.com/search?q=%23TidyTuesday&src=tyah){target="_blank"} projects. #TidyTuesdays are weekly data projects posted online by the R4DS (R for Data Science) community for anyone interested in working on developing their skills wrangling data within the R ecosystem. Feel free to check out the [#tidytuesday](https://github.com/rfordatascience/tidytuesday){target="_blank"} repository on github for more information. 
 
 I felt it would be only natural for my first post to be joining this community and moving from being an observer to a participant. The data posted this week comes from city of Seattle. 
 
@@ -19,7 +19,7 @@ I felt it would be only natural for my first post to be joining this community a
 
 ## Background
 
-"Seattle Department of Transportation has 12 bike counters (four of which also count pedestrians) located on neighborhood greenways, multi-use trails, at the Fremont Bridge and on SW Spokane Street. The counters are helping us create a ridership baseline in 2014 that can be used to assess future years and make sure our investments are helping us to reach our goal of quadrupling ridership by 2030. Read our Bicycle Master Plan to learn more about what Seattle is doing to create a citywide bicycle network." [Source](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02)
+"Seattle Department of Transportation has 12 bike counters (four of which also count pedestrians) located on neighborhood greenways, multi-use trails, at the Fremont Bridge and on SW Spokane Street. The counters are helping us create a ridership baseline in 2014 that can be used to assess future years and make sure our investments are helping us to reach our goal of quadrupling ridership by 2030. Read our Bicycle Master Plan to learn more about what Seattle is doing to create a citywide bicycle network." [Source](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-02){target="_blank"}
 
 ## What are we working with? 
 
@@ -33,7 +33,7 @@ bike_traffic <- readr::read_csv("https://raw.githubusercontent.com/rfordatascien
 head(bike_traffic)
 ```
 
-The TidyTuesday repository also provides a "data dictionary" table in their repository that defines each variable so we can have a better understanding of what we are working. Instead of recreating it from scratch, I want to attempt to scrape the information from their github page. This might be overkill for a 6 X 3 table but I have recently stumbled upon [Engaging the Web with R](https://m-clark.github.io/webR/) by Michael Clark. In it he demonstrated pulling data from a [table](https://en.wikipedia.org/wiki/List_of_cities,_villages,_and_townships_in_Michigan) found on Wikipedia. I was inspired to one day try it out myself and I think this is a great opportunity to implement it. 
+The TidyTuesday repository also provides a "data dictionary" table in their repository that defines each variable so we can have a better understanding of what we are working. Instead of recreating it from scratch, I want to attempt to scrape the information from their github page. This might be overkill for a 6 X 3 table but I have recently stumbled upon [Engaging the Web with R](https://m-clark.github.io/webR/){target="_blank"} by Michael Clark. In it he demonstrated pulling data from a [table](https://en.wikipedia.org/wiki/List_of_cities,_villages,_and_townships_in_Michigan){target="_blank"} found on Wikipedia. I was inspired to one day try it out myself and I think this is a great opportunity to implement it. 
 
 ### Web Scrape
 
@@ -68,7 +68,7 @@ DT::datatable(dictionary[[2]],
 
 The data set we are working with includes a date and time of when data was collection, the location of the counter, the number of bikes and pedestrians crossing counter, and what direction they are heading.
 
-While there are a lot of different analysis we can do with this data, for now I am going to just replicate some of the data visualizations composed the by Seattle Times about [What we can learn from Seattle's bike counter data](https://www.seattletimes.com/seattle-news/transportation/what-we-can-learn-from-seattles-bike-counter-data/). In their report, the Seattle Times disaggregated the data to see the average bike traffic across for each crossing during different time periods.
+While there are a lot of different analysis we can do with this data, for now I am going to just replicate some of the data visualizations composed the by Seattle Times about [What we can learn from Seattle's bike counter data](https://www.seattletimes.com/seattle-news/transportation/what-we-can-learn-from-seattles-bike-counter-data/){target="_blank"}. In their report, the Seattle Times disaggregated the data to see the average bike traffic across for each crossing during different time periods.
 
 Before we clean up our data, I don't know if you noticed but when I imported the data I manually entered the column types (except "date", which we will fix later). When I ran the line of code as #TidyTuesday had posted, R was reading some of the columns incorrectly and returning values that I saw were highly skeptical (Good reminder always to check your raw data.). 
 
