@@ -3,13 +3,13 @@ title: Special ggplot2 Variables
 author: ~
 date: '2019-06-25'
 slug: special-ggplot2-variables
-categories: []
-tags: ["ggplot2", "data labels"]
-description: ''
-topics: []
+categories: ['Data Visualization', 'R Gems']
+tags: ['ggplot2', 'data labels']
+description: 'Discuss and demonstrate how to access ggplot2 computed variables'
+topics: ['Data Visualization']
 ---
 
-```{r, setup, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```
 
@@ -21,7 +21,7 @@ However in R, adding and positioning specific labels is not as simple. One recen
 
 # Generate Data for Box Plot
 
-```{r, data}
+```{r data}
 # Load tidyverse
 library(tidyverse)
 
@@ -39,7 +39,7 @@ dat <- dat %>%
 
 # Unlabeled Box Plot
 
-```{r, box, message=FALSE, warning=FALSE}
+```{r box, message=FALSE, warning=FALSE}
 blank_boxplot <- ggplot(dat, aes(x = Variable, y = Value)) +
   geom_boxplot(aes(color = Variable)) +
   scale_y_continuous(breaks = seq(0, 35, 5)) +
@@ -59,7 +59,7 @@ blank_boxplot
 
 Now we have to calculate the mean and quantiles from our data and then store them in their own data frames to reference when building our plots. 
 
-```{r}
+```{r stats}
 # Calculate means
 mean <- dat %>% 
   group_by(Variable) %>% 
@@ -76,7 +76,7 @@ quants <- dat %>%
 
 We have to reference the *mean* data frame we created earlier. I added two layers, a point geom to mark the mean and a text geom to label the mean. 
 
-```{r, box_mean}
+```{r box_mean}
 box_withMean <- blank_boxplot +
   geom_point(data = mean, aes(Variable, Mean), shape = "cross") + 
   geom_text(data = mean, 
@@ -88,7 +88,7 @@ box_withMean
 
 Do the same with the *quants* data frame. 
 
-```{r, box_quant}
+```{r box_quant}
 box_withMean +
   geom_text(data = quants, 
             aes(Variable, value, label = round(value, 1), vjust = 8))
@@ -107,7 +107,7 @@ To call these variables you place them in between two periods (example: *..y..*)
 
 # Stat_Geoms & Stat Variables
 
-```{r, boxplot, message=FALSE, warning=FALSE}
+```{r boxplot, message=FALSE, warning=FALSE}
 blank_boxplot + 
   stat_summary(inherit.aes = TRUE, fun.y = "mean", geom = "point", 
                shape = "cross") + # Add Mean point

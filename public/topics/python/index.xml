@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Will Carcamo</title>
+    <link>/topics/python/</link>
+    <description>Recent content in Python on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 17 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/topics/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Learning Python: Part 2</title>
+      <link>/2019/06/17/learning-python-2rmd/</link>
+      <pubDate>Mon, 17 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/17/learning-python-2rmd/</guid>
+      <description>Learning PythonThis post is a continuation of a learning python. In this post, I will extend the last post and focus on tidyverse equivalents to:
+Mutate columnsSummarize data (Groupby)Pipe functions (%&amp;gt;%)Setting up Python in RmarkdownLoad Modules and Dataimport pandas as pdimport numpy as npurl = &amp;#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-05-28/winemag-data-130k-v2.csv&amp;#39;dat = pd.read_csv(url, index_col=0)Settings for better outputThis blog is built through the blogdown package and uses Rmarkdown files that render to HTML documents.</description>
+    </item>
+    
+    <item>
+      <title>Learning Python: The Beginning</title>
+      <link>/2019/05/31/learning-python-the-beginning/</link>
+      <pubDate>Fri, 31 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/05/31/learning-python-the-beginning/</guid>
+      <description>Learning PythonI often see a debate online between Python and R as programming languages for Data Science. I am not interested in continuing that debate here, but rather just want to continue to learn other programming languages and have another tool available to use. I often read online Python is better for general use programming while R was developed with statisticians in mind. If that is the case I think it would be helpful to start learning Python and see where I can use it for my advantage.</description>
+    </item>
+    
+  </channel>
+</rss>

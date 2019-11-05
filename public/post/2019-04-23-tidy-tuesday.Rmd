@@ -3,29 +3,33 @@ title: Tidy Tuesday - MyAnimeList
 author: ~
 date: '2019-04-23'
 slug: tidy-tuesday
-categories: []
+categories: ["Data Visualizations", "Explore Data"]
 tags: ["TidyTuesday", "tidyverse", "ggplot2", "plotly"]
 description: 'Exploring MyAnimeList.net Data'
-topics: []
+topics: ["Data Visualizations"]
 ---
 
 # MyAnimelist.net
 This week TidyTuesday posted data from an anime and manga social networking and social cataloging website, [MyAnimeList](https://myanimelist.net/){target="_blank"} (MAL). This data will be interesting to examine because last summer I started watching anime shows and got hooked. I am a little embarrassed to admit it but I've seen a lot of different shows since then. I hope I get to find some new shows that I can watch later.
 
 ## Data
-```{r, setup, echo=FALSE}
+```{r setup, echo=FALSE}
 # Set up options for rmarkdown chunks
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, echo = FALSE, comment = "")
 ```
 
-```{r, data}
+```{r load, echo=FALSE}
+tidy_anime <- rio::import(here::here("static/datasets", "anime.rdata"))
+```
+
+```{r data, eval=FALSE}
 # Load Data
 tidy_anime <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-04-23/tidy_anime.csv")
 ```
 
 Below are the different variables found within the dataset. There are a lot of different things we can look into but today we will be making graphs to visualize the most popular anime shows. The data has three different categories that I am interested in: *popularity*, *favorities*, and *rank*. Additionally, I wanted to demonstrate how easy it is to make dynamic plots out of static ggplots.
 
-```{r, scrape_table, echo=FALSE}
+```{r scrape_table, echo=FALSE}
 # Use read_html to read the underlying html structure and objects found on the page
 page <- xml2::read_html("https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-23")
 
@@ -44,14 +48,14 @@ DT::datatable(dictionary[[2]],
 There are a few packages that I have also used but I did not want to load
 them all in my environment just for a few functions but they are: **readr**, **lubridate**, **plotly**, **htmltools**, and **gridExtra**.
 
-```{r, packages}
+```{r packages}
 # Load Packages
 library(tidyverse)
 library(grid)
 ```
 
 # Rise in Anime Popularity
-```{r, production}
+```{r production}
 # ggplot of the number of animes produced over the years 
 production <- tidy_anime %>% 
   distinct(animeID, .keep_all = TRUE) %>% 
@@ -70,7 +74,7 @@ htmltools::div(plotly::ggplotly(production), align = "center")
 
 I guess I am not alone when it comes to getting hooked on anime shows. Since the start of the century, the number of anime shows produced has seen a large increase. Below we calculated the growth of the number of anime shows produced compared to the year before . Year 2001 saw the greatest increase in the number of shows produced compared to the year before (26%). On average, there has been an increase of *6.86%* each year between 2000 and 2018. 
 
-```{r, percent_Increase, fig.align="center"}
+```{r percent_Increase, fig.align="center"}
 # ggplot demonstrating percentages of animes produced compared to the year
 # before
 production$data %>% 
@@ -103,7 +107,7 @@ The three variables that we are looking at are popularity, fan favorites, and ra
 
 There are over *13631* unique animes listed in the dataset so I am only going to take a look at the top 100. We will make a scatterplot to show the top 100 *ranked* anime shows based on the number of members that have the anime on their personal list and the number of members that have the anime as their favorite. I made the scatterplot dynamic and when you hover over each point, you will be see the actual count of popularity (members) and favorites, name of the anime, a rank based on popularity (popularity), a score given by MAL members, rank based on the the score(Rank), and whether the anime is still currently airing. 
 
-```{r, pop_favs}
+```{r pop_favs}
 # Interactive Plotly scatterplot of top 100 most popular animes with additional
 # information in the tooltip when you hover over the point
 pop_fav <- tidy_anime %>% 
@@ -140,7 +144,7 @@ I used the **plotly** package for the plot above to help provide readers with mo
 
 ## I've <span style="color: #67A9CF">watched</span> only 4 of the top 20 ranked animes. 
 
-```{r, rank, fig.height=8}
+```{r rank, fig.height=8}
 # Plot of top 20 ranked animes
 tidy_anime %>% 
   distinct(animeID, .keep_all = TRUE) %>%
@@ -171,7 +175,7 @@ tidy_anime %>%
 
 As far as the most popular and fan favorite, there is a lot of overlap. Many of the popular ones are also fan favorites of MAL members, but there are a few that are in one category but not the other.
 
-```{r, top_anime, fig.height = 12}
+```{r top_anime, fig.height = 12}
 #Clean ggplot2 theme
 clean_theme <- theme_classic() +
   theme(legend.position = "none", axis.line.x = element_blank(), 
@@ -262,7 +266,7 @@ I have seen almost half of the top popular and favorite anime shows. There are d
 
 Below is the code for everything in this post. 
 
-```{r, all_code, ref.label = knitr::all_labels(), echo=TRUE, eval=FALSE}
+```{r all_code, ref.label = knitr::all_labels(), echo=TRUE, eval=FALSE}
 
 ```
 

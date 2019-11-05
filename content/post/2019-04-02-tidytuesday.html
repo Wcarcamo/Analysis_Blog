@@ -3,10 +3,10 @@ title: 'First #TidyTuesday'
 author: ~
 date: '2019-04-02'
 slug: tidytuesday
-categories: []
+categories: ['Data Visualizations']
 tags: ['TidyTuesday', 'rvest', 'ggplot2']
-description: ''
-topics: []
+description: 'Taking part of the TidyTuesday Community. Plots of Seattle Bike counters.'
+topics: ['Data Visualizations']
 ---
 
 <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
@@ -53,7 +53,6 @@ head(bike_traffic)</code></pre>
 <h3>Web Scrape</h3>
 <div id="data-dictionary" class="section level4">
 <h4>Data Dictionary</h4>
-<pre><code>## Warning: package &#39;xml2&#39; was built under R version 3.6.1</code></pre>
 <div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"none","data":[["date","crossing","direction","bike_count","ped_count"],["date (mdy hms am/pm)","character","character","double","double"],["Date of data upload","The Street crossing/intersection","North/South/East/West - varies by crossing","Number of bikes counted for each hour window","Number of pedestrians counted for each hour window"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>variable<\/th>\n      <th>class<\/th>\n      <th>description<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-left","targets":[0,1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -95,13 +94,11 @@ DT::datatable(dictionary[[2]],
 <div id="setting-up-our-data" class="section level1">
 <h1>Setting Up Our Data</h1>
 <pre class="r"><code>#load packages
-library(tidyverse) #for dplyr, ggplot2, forcats packages</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.6.1</code></pre>
-<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.6.1</code></pre>
-<pre class="r"><code>library(lubridate) #for easier work with date/times
-library(cowplot) #for arranging our ggplots</code></pre>
-<pre><code>## Warning: package &#39;cowplot&#39; was built under R version 3.6.1</code></pre>
-<pre class="r"><code>#Time Interval 
+library(tidyverse) #for dplyr, ggplot2, forcats packages
+library(lubridate) #for easier work with date/times
+library(cowplot) #for arranging our ggplots
+
+#Time Interval 
 FY17_18 &lt;- interval(mdy(&quot;5/1/2017&quot;), mdy(&quot;4/30/2018&quot;))
 
 #Prep data

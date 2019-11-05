@@ -3,13 +3,13 @@ title: "Learning Python: Part 2"
 author: ~
 date: '2019-06-17'
 slug: learning-python-2Rmd
-categories: []
-tags: ["Python", "Pandas"]
-description: ''
-topics: []
+categories: ['Python']
+tags: ['Python', 'Pandas']
+description: 'Part two of translating data tasks done in R but with Python.'
+topics: ['Python']
 ---
 
-```{r, setup, echo=FALSE}
+```{r setup, echo=FALSE}
 # Set up options for rmarkdown chunks
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#")
 ```
@@ -24,13 +24,13 @@ This post is a continuation of a learning python. In this post, I will extend th
 
 # Setting up Python in Rmarkdown
 
-```{r, setup-python, echo=FALSE}
+```{r setup-python, echo=FALSE}
 library(reticulate)
 use_virtualenv("r-reticulate")
 ```
 
 ## Load Modules and Data
-```{python, load}
+```{python load}
 import pandas as pd
 import numpy as np
 
@@ -42,14 +42,14 @@ dat = pd.read_csv(url, index_col=0)
 
 This blog is built through the **blogdown** package and uses Rmarkdown files that render to HTML documents. Rmarkdown files best support R output but I do not know how to best format python outputs. I get inconsistent syntax highlighting. 
 
-```{python, options}
+```{python options}
 # Stop Python from truncating number of columns
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 1000)
 pd.set_option('precision', 2)
 ```
 
-```{r, echo=FALSE, eval=FALSE}
+```{r echo=FALSE, eval=FALSE}
 View(py$dat)
 ```
 

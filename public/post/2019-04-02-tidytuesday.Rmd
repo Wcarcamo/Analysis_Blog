@@ -3,11 +3,15 @@ title: 'First #TidyTuesday'
 author: ~
 date: '2019-04-02'
 slug: tidytuesday
-categories: []
+categories: ['Data Visualizations']
 tags: ['TidyTuesday', 'rvest', 'ggplot2']
-description: ''
-topics: []
+description: 'Taking part of the TidyTuesday Community. Plots of Seattle Bike counters.'
+topics: ['Data Visualizations']
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
 
 # Joining #TidyTuesday
 
@@ -25,7 +29,7 @@ I felt it would be only natural for my first post to be joining this community a
 
 Lets grab our data, and then take a quick look at it. 
 
-```{r, setup, warning=FALSE, message=FALSE}
+```{r data}
 #load data
 bike_traffic <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-04-02/bike_traffic.csv", col_types = "cccnn")
 
@@ -39,7 +43,7 @@ The TidyTuesday repository also provides a "data dictionary" table in their repo
 
 #### Data Dictionary
 
-```{r, scrape_table, echo=FALSE, message=FALSE}
+```{r scrape_table, echo=FALSE}
 #load rvest package
 library(rvest)
 
@@ -61,7 +65,7 @@ DT::datatable(dictionary[[2]],
 
 #### Code
 
-```{r, ref.label="scrape_table", eval=FALSE}
+```{r show_table, ref.label="scrape_table", eval=FALSE}
 ```
 
 ## Back to Business
@@ -74,7 +78,7 @@ Before we clean up our data, I don't know if you noticed but when I imported the
 
 For example, our ped_count was read as boolean and my values were either "NA", "TRUE", or "FALSE". Our bike_count column was read as numeric but I was getting a count range from 0-8500. I don't know about you, but this was a red flag for me. These bike counters are collecting counts at specific locations every hour. Trying to imagine that at 4:00 am on May 30, 2018 there were 8191 bikers crossing the South Burke Gilman Trail is a little humorous. 
 
-```{r, tourdefrance, echo=FALSE}
+```{r tourdefrance, echo=FALSE}
   dplyr::filter(bike_traffic, date == "05/30/2018 04:00:00 AM", 
                 crossing == "Burke Gilman Trail", direction == "South")
 ```
@@ -83,7 +87,7 @@ I think its fair to believe there are a couple of errors during data collection,
 
 # Setting Up Our Data
 
-```{r, cleaning_data, message=FALSE}
+```{r cleaning_data, message=FALSE}
 #load packages
 library(tidyverse) #for dplyr, ggplot2, forcats packages
 library(lubridate) #for easier work with date/times
@@ -118,7 +122,7 @@ For each crossing we will have the average bike traffic by:
 
 There are six crossings, therefore we will have 24 plots in total. To save us from writing out the code for each individual plot we will do the following: For each plot, we will first perform our specific aggregation. Second, split our data into a list of data frames grouped by crossing. Third, we will map our ggplot2 code onto our list. Fourth, we will place the output into its own object. This object will be a list of our ggplots which we will call later to sort all our plots by crossing.
 
-```{r, plots}
+```{r plots}
 #By Year
 p.year <- btraffic %>% 
   mutate(mnth = fct_relevel(mnth, c("May", "June", "July", "August", 
@@ -217,7 +221,7 @@ p.weekend <- btraffic %>%
 
 Now that we have our plots, we have to arrange them together.
 
-```{r, plot_grids, echo=FALSE}
+```{r plot_grids, echo=FALSE}
 grid_title <- ggdraw() + draw_label("Average Bike Traffic", fontface = "bold")
 
 broadway <- plot_grid(
@@ -271,7 +275,7 @@ fiftyeighth <- plot_grid(
 
 The code below are the steps used to sort our plots for each crossing but only one crossing, Broadway Cycle Track, is shown to save space in the post. The process is repeated for each crossing. The only difference is swapping out the crossing variables in our ggplot lists. 
 
-```{r, plot_grids_ex, eval=FALSE}
+```{r plot_grids_ex, eval=FALSE}
 # title
 grid_title <- ggdraw() + draw_label("Average Bike Traffic", fontface = "bold")
 
@@ -290,32 +294,32 @@ plot_grid(grid_title, broadway, ncol = 1, rel_heights = c(0.1, 1))
 Now we can sit back, view, and appreciate our plots for each crossing. 
 
 # Broadway Cycle Track North Of E Union St
-```{r, broadway, echo=FALSE}
+```{r broadway, echo=FALSE}
 plot_grid(grid_title, broadway, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
 # Burke Gilman Trail
-```{r, burke, echo=FALSE}
+```{r burke, echo=FALSE}
 plot_grid(grid_title, burke, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
 # Elliot Bay Trail
-```{r, elliot, echo=FALSE}
+```{r elliot, echo=FALSE}
 plot_grid(grid_title, elliot, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
 # 39th Ave NE Greenway at NE 62nd St
-```{r, 39th, echo=FALSE}
+```{r 39th, echo=FALSE}
 plot_grid(grid_title, thirtynineth, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
 # MTS Trail
-```{r, mts, echo=FALSE}
+```{r mts, echo=FALSE}
 plot_grid(grid_title, mts, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
 # NW 58th St Greenway at 22nd Ave
-```{r, 58th, echo=FALSE}
+```{r 58th, echo=FALSE}
 plot_grid(grid_title, fiftyeighth, ncol = 1, rel_heights = c(0.1, 1))
 ```
 

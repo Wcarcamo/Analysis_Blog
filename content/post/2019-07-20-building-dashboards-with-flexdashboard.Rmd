@@ -3,10 +3,10 @@ title: Building Dashboards with Flexdashboard
 author: ~
 date: '2019-07-20'
 slug: building-dashboards-with-flexdashboard
-categories: []
-tags: ['dashboard']
-description: ''
-topics: []
+categories: ['Dashboard']
+tags: ['Dashboard', 'Flexdashboard']
+description: 'Creating a dashboard using mtcars data and flexdashboard.'
+topics: ['Dashboard']
 ---
 
 # Dashboards
@@ -17,7 +17,7 @@ I first tried to host the dashboard embedded within this post but the output in 
 
 I then searched for other ways to host this dashboard and found an interesting website called [DriveToWeb](https://drv.tw){target="_blank"}. You can upload website files onto your google drive and use drive to host static websites. Since this dashboard is only one stand alone file it was easy to upload and set up to start being hosted on my google drive. 
 
-[View Dashboard Here!](https://lm2udfmm07jjlwe9jmupwg-on.drv.tw/Analysis_Blog/7-20-19_mtcars_Dashboard_Example/){target="_blank"}
+[View Dashboard Live Here!](https://lm2udfmm07jjlwe9jmupwg-on.drv.tw/Analysis_Blog/7-20-19_mtcars_Dashboard_Example/){target="_blank"}
 
 # Flexdashboard Example
 

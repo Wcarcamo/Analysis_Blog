@@ -3,14 +3,14 @@ title: Resampling Spurious Correlations
 author: ~
 date: '2019-09-22'
 slug: correlation-resampling
-categories: []
-tags: ["Statistics", "Nassim N. Taleb"]
+categories: ['Statistics']
+tags: ['Statistics', 'Nassim N. Taleb', 'Correlations']
 description: ''
-topics: []
+topics: ['Statistics']
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 library(tidyverse)
 ```
 
@@ -21,7 +21,7 @@ Recently, there was a interesting twitter fued between Taleb and [Claire Lemon](
 
 In the midst of the civil conversation on twitter, I saw a video by Taleb talking about the randomness of correlation. In the video he ran through a simple exercise that showed you can randomly take two normally distributed variables and find spurious correlations. The exercise begins around 3:53 below.
 
-```{r, taleb_video}
+```{r taleb_video}
 blogdown::shortcode("youtube", "D6CxfBMUf1o")
 ```
 

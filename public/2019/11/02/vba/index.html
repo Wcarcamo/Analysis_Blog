@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Applying a &#34;for&#34; loop in Excel with VBA to compile data across multiple spreadsheets">
+  <meta name="generator" content="Hugo 0.54.0" />
+
+  <title>Using VBA To Aggregate Excel Data &middot; Will Carcamo</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
+
+  
+    
+        <link rel="stylesheet" href="/css/custom.css">
+    
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="/">WC</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="/contact/"><i class='fa fa-phone fa-fw'></i>Contact</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/Wcarcamo3" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/wcarcamo" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/Wcarcamo" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2019. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Using VBA To Aggregate Excel Data</h1>
+  <h2>Applying a &#34;for&#34; loop in Excel with VBA to compile data across multiple spreadsheets</h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>02 Nov 2019</time>
+  </div>
+
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-folder fa-fw"></i>
+    
+      <a class="post-taxonomy-topic" href="/topics/vba">VBA</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-topic" href="/topics/programming">Programming</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-topic" href="/topics/data-management">Data Management</a>
+    
+  </div>
+  
+  
+
+  
+  
+  
+  <div>
+    <i class="fa fa-tags fa-fw"></i>
+    
+      <a class="post-taxonomy-tag" href="/tags/vba">VBA</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="/tags/loops">Loops</a>&nbsp;&#47;
+    
+      <a class="post-taxonomy-tag" href="/tags/excel">Excel</a>
+    
+  </div>
+  
+  
+
+</div>
+
+  
+
+
+<div id="visual-basic-for-applications" class="section level1">
+<h1>Visual Basic for Applications</h1>
+<p>Back in August, I learned that with Microsoft Office products (i.e. Word, Excel, Access) you can write your own macros to help automate repetative tasks or create your own needed office functions that are not standard with office products to improve your workflow. I give props to Microsoft, because I have definitely been frustrated at times and wishing for more functionality from their products, but I understand they reach a global market and it is not possible to program everything people need in their products. Instead Microsoft gives you the tools to customize your own Office products with the Visual Basic for Applications programming language (VBA).</p>
+<p>I often use Excel for work and I wanted to see if I could learn VBA and implement my own macro someday. I found <a href="https://www.wiseowl.co.uk/" target="_blank">WiseOwl</a> online when googleing (googling? You know what I mean…) for resources and started working through their <a href="https://www.wiseowl.co.uk/vba-macros/exercises/" target="_blank">Excel VBA exercises</a>. Going through the exercises helped me tremendously and I was able to start writing macros in no time. Then in september, I got my opportunity to apply what I learned for a real-world project at work.</p>
+</div>
+<div id="implementing-my-first-vba-solution" class="section level1">
+<h1>Implementing My First VBA Solution</h1>
+<p>I was given a project where I had to help verify a client’s count of aggregated data for state reporting. Usually, aggregating data requires little effort and does not take much time when you have a right data system in place. However, this client had to collected and report data from 14 of their funded programs and to manage the data, the client was in contract with a software company (hereinafter referred to as “SC”) that let the funded programs to submit their data online.</p>
+<p>While this sounds convenient, it turned out to be a huge mess. The SC made what should be simple tasks difficult. To be fair, it could have been the client I was working with did not set up their system properly with SC, but having to navigate the software myself I think the SC could do with some major improvements.</p>
+<p>Long story short, you could not aggregate the data through their software and I had to manually export all the data for each program to Excel. When I opened up the Excel files, I was met with more headaches. For some reason, the SC exported data as shown below.</p>
+<div class="figure">
+<img src="/img/201911_VBA/01_Data_Report.PNG" alt="Sheet 1: Export Format" style="width:100.0%" />
+<p class="caption">Sheet 1: Export Format</p>
+</div>
+<p>I removed the program site for confidentiality and included randomn numbers for data but I highlighted the data that I needed in sky blue. Now let’s review some of the issues I had with this data.</p>
+<div id="issue-1" class="section level2">
+<h2>Issue #1</h2>
+<p>The data I had to aggregate was the program site, performance measure (which for some reason was repeated under comment), time period, date, and actual value. Everything else was unneccessary. I was hoping everything was organized into a simple table which was entirely possible, but SC chose to use a custom structure that wrapped the table with clutter.</p>
+</div>
+<div id="issue-2" class="section level2">
+<h2>Issue #2</h2>
+<p>All programs reported the same number of performance measures, but SC exported all performance measures on individual spreadsheets. This meant each (14) program workbook had 114 sheets and I would have to review a total of 1596 sheets with data.</p>
+</div>
+<div id="issue-3" class="section level2">
+<h2>Issue #3</h2>
+<p>The third headache, was dealing with missing data. In this context, an empty cell meant that the program did not anything to report. Sometimes no data was reported for specific time periods as shown below and highlighted in yellow.</p>
+<div class="figure">
+<img src="/img/201911_VBA/02_Challenge.PNG" alt="Sheet 2: No Data Reported For One Time Period" style="width:100.0%" />
+<p class="caption">Sheet 2: No Data Reported For One Time Period</p>
+</div>
+<p>Other times, there was no data reported for the entire program year on certain performance measures but we were at least given the time periods in the spreadsheets to indicate nothing to report.</p>
+<div class="figure">
+<img src="/img/201911_VBA/03_Challenge.PNG" alt="Sheet 3: No Data Reported For The Year" style="width:100.0%" />
+<p class="caption">Sheet 3: No Data Reported For The Year</p>
+</div>
+<p>But then other times, SC would export spreadsheets with everything missing. SC was inconsistent between including time periods even if there was no data to report.</p>
+<div class="figure">
+<img src="/img/201911_VBA/04_Challenge.PNG" alt="Sheet 4: Everything is Missing" style="width:100.0%" />
+<p class="caption">Sheet 4: Everything is Missing</p>
+</div>
+</div>
+<div id="issue-4" class="section level2">
+<h2>Issue #4</h2>
+<p>Finally, some programs had data from previous years that were also included. For this project, we only needed to aggregate the 18/19 program year.</p>
+<div class="figure">
+<img src="/img/201911_VBA/05_Challenge.PNG" alt="Sheet 5: Data for Past Years Included" style="width:100.0%" />
+<p class="caption">Sheet 5: Data for Past Years Included</p>
+</div>
+</div>
+</div>
+<div id="macro-solution" class="section level1">
+<h1>Macro Solution</h1>
+<p>What I wanted was to compile all the data across all 114 spreadsheets into one sheet. That way I could then create a pivot table to aggregate my final counts. Without the macro the only way to accomplish this would have to go back and forth through each sheet copying and pasting the data I needed. I was not about to spending my time doing this for a total of 1596 sheets.</p>
+<p>Thus the macro below was born:</p>
+<pre><code>Sub Aggregate()
+
+    &#39; Create Variables &#39; 
+    Dim i As Integer
+    x = Sheets.Count - 1
+    
+    Dim pM As Long
+    Dim lastRow As Long
+    Dim ST As Worksheet
+    Dim dB As Worksheet
+    Set dB = Sheets(Worksheets.Count)
+    
+    For i = 1 To x
+        If Not IsEmpty(Sheets(i).Range(&quot;A4&quot;)) Then
+            Set ST = Sheets(i)
+
+            &#39; This is to copy and paste Time, Date, and Actual Value &#39;
+            ST.Range(ST.Cells(4, 1), ST.Cells(4, 1).End(xlDown).Offset(0, 2)).Copy
+            
+            &#39; Paste the copy &#39;
+            dB.Cells(Rows.Count, 2).End(xlUp).Offset(1, 0).PasteSpecial
+            
+            &#39; Copy the performance measure &#39;
+            ST.Cells(1, 1).Copy
+            
+            &#39; Paste performance measure &#39;
+            pM = dB.Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).Row
+            lastRow = dB.Cells(Rows.Count, 2).End(xlUp).Row
+            
+            dB.Cells(Rows.Count, 1).End(xlUp).Offset(1, 0).PasteSpecial
+            dB.Range(&quot;A&quot; &amp; pM).AutoFill Destination:=dB.Range(&quot;A&quot; &amp; pM, &quot;A&quot; &amp; lastRow), Type:=xlFillCopy
+            
+        End If
+    Next i
+
+End Sub</code></pre>
+<p>The macro is a standard “for” loop. In sum it goes through every sheet copying the data I needed and pasting it into one sheet for me. In less than 10 seconds I got what I wanted for each program site.</p>
+<p>Conceptually, the macro I wrote does the following using sheets 1-5 from above as an example:</p>
+<ol style="list-style-type: decimal">
+<li>Create variables that I need to keep track of progress while inside the loop.</li>
+<li>Initiate the loop.</li>
+<li>Starting at the first sheet, check if cell A4 is empty. If the cell was empty that meant there was nothing to report and to go on to the next sheet. This addressed issue #4.</li>
+<li>If A4 was not empty, select and copy everything from cell A4 down until reaching a blank cell and then continue selecting the 2 columns to the right.
+This will get us most of the data we need for time period, date, and actual value. The gif helps us visualize what Excel does in this step.</li>
+</ol>
+<p><img src="https://media.giphy.com/media/VGJgjmsexzrT93uSK1/giphy.gif" class="center" /></p>
+<ol start="5" style="list-style-type: decimal">
+<li>After selecting cells A4:C4, copy and paste the cell values into a table found on a new sheet at the end of the workbook. In our new table the data is pasted to columns B to D. The data will be pasted starting at the bottom of the table in the first empty row to prevent previous pasted data from being overridden.</li>
+<li>The loop then goes back to the same sheet to copy the remaining “PROGRAM SITE: PERFORMANCE MEASURE” cell and paste it into our new sheet, column A.</li>
+<li>The previous step also requires to fill down the performance measure to match the number of rows copied from step 5.</li>
+</ol>
+<p><img src="https://media.giphy.com/media/IbrzvyiugUD5KQllnh/giphy.gif" class="center" /></p>
+<ol start="8" style="list-style-type: decimal">
+<li>After the previous steps are completed, the loop moves onto the next sheet. The final output looks like below. <strong>Note:</strong> I also included an extra column named “Sheet” to help you keep track since performance measure all look the same for this example. In the real application performance measure varied.</li>
+</ol>
+<div class="figure">
+<img src="/img/201911_VBA/06_Macro_Output.PNG" alt="Output: Compiled Data Table" style="width:100.0%" />
+<p class="caption">Output: Compiled Data Table</p>
+</div>
+<p>The final output is a lot closer to how I wished SC would export their data. With a table in this format, analysis is a breeze. I eventually did make a pivot table to help me complete my original task of verifying the total counts but before I did, I had to do a little more manual cleaning outside of the macro.</p>
+<p>First, I split the performance measure column A into two columns; program site and performance measure. This is a better practice to manage our data and once we have a pivot table we could then filter by either column. Second, I didn’t escape having to do some manual copying and pasting. The macro compiled the data only with each exported program workbook, but not across the workbooks. I did not feel ready to add this level of complexity in my macro and I was also on a deadline. I didn’t mind having to copy and paste only 14 sheets compared to the original 1596 sheets. My final table had all 14 programs in one file.</p>
+</div>
+<div id="dont-program" class="section level1">
+<h1>Don’t Program?</h1>
+<p>Overall, I was very proud of myself for finding a solution to complete my work in an efficient manner. Without the macro this task could have taken a couple of days, but I got it done in under one. The satisfaction of finding solutions to problems by being able to program is an unmatched when I work and it is also when I am most engaged. That being said, I know not everyone is interested in programming. If at anytime someone is curious about trying to automate a task, feel free to reach out to me. I would love the experience and am always glad to help others out. The task could be related to VBA and Excel or other platforms and languages.</p>
+</div>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="/2019/10/30/json-tabular-data-r-lists-part-1/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="/2019/10/30/json-tabular-data-r-lists-part-1/">JSON, Tabular Data, &amp; R Lists: Part 1</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+
+(function() {
+    
+    
+    if (window.location.hostname == "localhost")
+        return;
+
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+    var disqus_shortname = 'wcarcamo';
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+</div>
+
+</div>
+</div>
+<script src="/js/ui.js"></script>
+
+
+<script>
+  
+  if (window.location.hostname != "localhost") {
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-143012087-1', 'auto');
+    ga('send', 'pageview');
+  }
+</script>
+
+
+
+
+
+</body>
+</html>
+

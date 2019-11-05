@@ -5,21 +5,15 @@ date: "2019-3-24"
 sidemenu: yes
 ---
 
-<style>
-.leaflet {
-    margin: auto;
-}
-</style>
-
 ```{r setup, include=FALSE}
 library(knitr)
-opts_chunk$set(echo = FALSE, comment = "", message = FALSE)
-opts_knit$set(root.dir = normalizePath(".."))
+opts_chunk$set(echo = FALSE, comment = "", message = FALSE, warning = FALSE)
 ```
 
 ```{r, results='hide'}
 library(tidyverse)
 library(htmltools)
+library(here)
 ```
 
 # A New Hobby
@@ -32,7 +26,7 @@ I currently live in Sacramento. I moved from Los Angeles at the end of the summe
 
 ```{r, map}
 #Load Route Data
-load("datasets/la2sac.rdata")
+load(here("static/datasets", "la2sac.rdata"))
 
 #Create map
 library(leaflet)

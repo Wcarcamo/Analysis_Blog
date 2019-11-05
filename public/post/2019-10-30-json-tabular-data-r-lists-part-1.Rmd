@@ -1,0 +1,400 @@
+---
+title: 'JSON, Tabular Data, & R Lists: Part 1'
+author: ~
+date: '2019-10-30'
+slug: json-tabular-data-r-lists-part-1
+categories: ['JSON', 'Data Management']
+tags: ['JSON', 'Data Management']
+description: 'Learning about JSON'
+topics: ['JSON', 'Data Management']
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(kableExtra.html.bsTable = TRUE)
+
+```
+
+# Inspiration
+
+I was recently asked if I could help out with a project that involved parsing out JSON (JavaScript Object Notation) data. I am really grateful that I become involved on this because I had no prior experience with JSON structured data but the knowledge I gained from some of the challenges I ran into has been priceless. The project led to a major paradigm shift that has now helped me understand valuable programming ideas (i.e. the beauty of R's **list** data type and the _**purrr**_ package) that I have always fundamentally stuggled with and thus lacked the motivation to implement in my coding to solve problems. 
+
+# Introduction to JSON
+
+My goals for today are: 
+
+1. Help bring exposure to how data is stored and represented in JSON compared to tabular data (i.e. spreadsheets & tables). We will focus on building a conceptual understanding and not dive too deep on the specific JSON syntax.
+
+2. Illustrate that on the surface data stored in a tabular structure is not inherently different from JSON. In other words, Underneath the hood all tabular data can easily be thought of as JSON-like, but not all JSON data can be thought of as tabular.
+
+Part 2 of this series will look into more depth on **how** all tabular data can be thought of as just JSON by discussing R's **list** data type. 
+
+I think it is fair to say that most people (myselft included) who work with data, are conventionally trained to think about storing and using data from a tabular perspective. Most well-known and commonly used software are even built around framing data into tables. For example, knowing how to use Excel is a must for anyone with a career involving data. Storing data in tables is the norm and this can be illustrated by creating the following table below. 
+
+```{r}
+# Load Packages
+library(tidyverse)
+library(rio)
+library(here)
+library(knitr)
+library(kableExtra)
+
+```
+
+```{r table1, fig.cap="Students"}
+# Table 1: Students
+t1 <- tibble(
+  ID = c(101, 102, 103),
+  Name = c("John", "James", "Barry"),
+  Age = c(21, 22, 18),
+  Major = c("Computer Science", "English", "Psychology")) %>% 
+  kable(caption = "Students") %>% 
+  kable_styling(full_width = FALSE)
+
+t1
+
+```
+
+I think most people with any level of data literacy can read the table and understand what is being captured. We can see three different students with their ID, name, age, and major and make a safe assumption that this table holds records of students at some university or college. 
+
+The same data from the table can also be stored into a JSON file. JSON data is stored in **key:value** pairs and the raw syntax for storing our information would look like the following: 
+
+* Note - the semicolon '**:**' indicates a key-value pair and white space was added for emphasis and clarity.
+
+```{r json1, eval=FALSE, echo=TRUE}
+# JSON: Students 
+{ "Students": [
+    {
+      "ID"    : 101, 
+      "Name"  : "John", 
+      "Age"   : 21, 
+      "Major" : "Computer Science"
+    },
+    {
+      "ID"    : 102, 
+      "Name"  : "James", 
+      "Age"   : 22, 
+      "Major" : "English"
+    },
+    {
+      "ID"    : 103, 
+      "Name"  : "Barry", 
+      "Age"   : 19, 
+      "Major" : "Psychology"
+    },
+  ]
+}
+
+```
+
+For simple cases like the one provide, I think JSON is straight forward and could be read and understood by most just as easily as the table, but I admit the table is far cleaner and concise. JSON is however more flexibile with how the same data can be stored. I will provide another example in the second half of this post but for now this will be the example to help us further understand JSON's structure. 
+
+# Comparing Tabular and JSON Data
+
+By now, I hope you are somewhat interested in JSON but I also expect some readers to be thinking something along the lines of, "I can see how the simple data is stored in JSON but why should I care about it and continue reading when the table works just fine, simple to understand and use, and can be used to reach a broader audience?" In my opinion, I think one major reason is because there is a very common problem that arises when working with and managing data from a tabular perspective that is not often discussed unless you are a database manager or care deeply about technical issues when storing and retrieving data. The problem boils down to, what do you do when a record of data can take more than one response?
+
+## Handling Data With More Than One Response
+
+There are usually more than one way to solve a problem, but different methods always tend to have trade-offs. We will see the trade-offs between tabular data and JSON when we have to capture data that can take on more than one response. Although tables are clean and intuitive, Tabular data can only take **one response/value** for each row and column. Right now our table is simple and all of our columns have one possible response per student, but sometimes we need to data that can take more than one response.
+
+Lets say we want to keep track of different intramural sports students are participating in this year. 
+
+* John is in basketball and soccer
+* James is not in any sport
+* Barry is in baseball
+
+To add this data into our table we have **three options**. 
+
+### Table Option 1:
+
+The first option is to make our original table **wider** by adding the different sports as individual columns and entering a yes/no response for each sport.
+
+```{r wide}
+# Wide Table: Students & Intramurals
+tibble(
+  ID = c(101, 102, 103),
+  Name = c("John", "James", "Barry"),
+  Age = c(21, 22, 18),
+  Major = c("Computer Science", "English", "Psychology"),
+  Basketball = c("Yes", "No", "No"),
+  Soccer = c("Yes", "No", "No"),
+  Baseball = c("No", "No", "Yes")) %>% 
+  kable(caption = "Wide - Students & Intramural Sports") %>% 
+  kable_styling(full_width = FALSE)
+
+```
+
+For small datasets, this is fine and and commonly seen in real-world applications. It works for small applications but if you try to scale up the number of potential problems maintaining and using this dataset can grow exponentially. In our example we've only captured three different sports from three different students but if we would expand our dataset to mimic a real school campus, our table will have thousands of students and require many more columns to be added for all the potential sports offered. There will be a lot of wasted space and it would be cumbersome to add yes/no for each individual on all available sports.
+
+### Table Option 2:
+
+The second option, is to make the table **longer** by adding only one new column that captures the individual sports. 
+
+```{r long}
+# Long Table: Students & Intramurals
+tibble(
+  ID = c(101, 101, 102, 103),
+  Name = c("John", "John", "James", "Barry"),
+  Age = c(21, 21, 22, 18),
+  Major = c("Computer Science", "Computer Science", "English",
+    "Psychology"),
+  Sport = c("Basketball", "Soccer", "None", "Baseball")) %>% 
+  kable(caption = "Long - Students & Intramural Sports") %>% 
+  kable_styling(full_width = FALSE)
+
+```
+
+Now we don't have to worry about yes/no responses and can focus only on one column. But making a table longer as we've done has its own issues. While we now have only one column for sports, we've introduced duplicates in the rest of the table. John participates in more than one sport and rows are duplicated to the same number of sports they are in. This table is still "usable" at this scale but similar to the wide table option the potential for running into problems and having to clean for duplicates during analysis becomes more difficult to deal with when applied to real-world contexts.
+
+### Table Option 3:
+
+The third option we have (and highly recommended) is to create a **new table** that can be linked back to our first table. This is where relational database management systems have historically shined (i.e. MySQL, Oracle, Access). In our example we will use the student's ID to link between our tables. 
+
+
+```{r relational, results='asis'}
+# Table 2: Intramurals
+t2 <- tibble(
+  ID = c(101, 101, 103),
+  Sport = c("Basketball", "Soccer", "Baseball")) %>% 
+  kable(caption = "Intramurals") %>% 
+  kable_styling(full_width = FALSE) %>% 
+  column_spec(c(1,2), width = "4em")
+
+# Combining Table 1 & 2 as one figure and shown side by side in HTML
+cat(c('<table align="center"><tr valign="top">',
+  '<td>', t1, '</td>', 
+  '<td width="50em">', '</td>',
+  '<td>', t2, '</td>',
+  '</tr></table>'), sep = '')
+
+```
+
+Admittedly, by having two tables it does make it harder for humans to intuitively understand what is going on compared to the wide or longer table. However, as mentioned earlier when datasets scale, this method will be far less prone to errors (although not infallible), easier to manage, and computers will be far more efficient when analyzing data stored in this method. 
+
+### Multiple Responses in JSON
+
+So how would JSON store this type of information? JSON takes a different approach to store data. Instead of becoming "wider", "longer", or having to make a whole "new table", data is embedded **"deeper"** within itself. JSON data is stored with a hierarchical structure in mind. In other words, JSON takes a tree-like form and data can continually be further nested upon itself. We will stick with the tree-like analogy to help us illustrate our points. Key:value pairs can be thought of as branches:leaves. 
+
+With this metaphor, we can discuss a natural phenomena that on any given branch on a tree you can find one or more leaves (and sometimes no leaves at all). Similarly, JSON keys (branches) can have more than one value (leaves) without it being a problem as faced with tables. 
+
+This property allows for intrinsically related data stay closer togethor instead of being split apart and needing to be linked together again by some other variable. We demonstrate in the syntax below that the values for the key "Sport" are indented in the next line to show the data being stored is nested deeper in the tree.
+
+* Note - I overemphasized the indentation for demonstrational purposes and responses are wrapped in brackets [ ] to symbolize more than one possible value, even if they only contain one response or the branch is empty. 
+
+```{r json2, eval=FALSE, echo=TRUE}
+# JSON: Students & Intramurals
+{ "Students": [
+    {
+      "ID"    : 101, 
+      "Name"  : "John", 
+      "Age"   : 21, 
+      "Major" : "Computer Science",
+      "Sport" : [
+                  "Basketball", 
+                  "Soccer"
+                ]
+    },
+    {
+      "ID"    : 102, 
+      "Name"  : "James", 
+      "Age"   : 22, 
+      "Major" : "English",
+      "Sport" : []
+    },
+    {
+      "ID"    : 103, 
+      "Name"  : "Barry", 
+      "Age"   : 19, 
+      "Major" : "Psychology",
+      "Sport" : [
+                  "Baseball"
+                ]
+    }
+  ]
+}
+
+```
+
+Not only can branches have more than one leaf, branches can also contain another branch with their own leaves. Theoretically, there are no limits for how many branches can be nested on another branch. I don't know if you noticed but there are actually 3 branches that stem from our starting tree branch of "students". Each of these 3 branches have their own key:value pairs of data. 
+
+To help illustrate the points being made above, I made a diagram with the help of the _**DiagrammeR**_ package to show the tree-like structure. To save space I only show the first student branched out but the same can be applied to the other students.  
+
+```{r diagrammeR1, fig.cap="Nested JSON data branched out for Student #1", fig.align='center', out.width="100%"}
+# Figure 1: Nested JSON data branched out for student #1
+DiagrammeR::grViz("
+digraph students {
+
+graph [rankdir = LR]
+
+node [shape = square, fontname = 'Open Sans']
+'Students:'; '1:'; '2:'; '3:'
+
+node [shape = rectangle, width = 1]
+'ID: \n101'; 'Name: \nJohn'; 'Age: \n21'; 'Major: \nComputer \nScience'; 'Sport:'
+
+edge [arrowhead = none]
+'Students:' -> {'1:', '2:', '3:'}
+'1:' -> {'ID: \n101', 'Name: \nJohn', 'Age: \n21', 'Major: \nComputer \nScience', 'Sport:'}
+'Sport:' -> {'Basketball', 'Soccer'}
+'2:' -> 'ID: \n...'
+'3:' -> '...'
+
+}
+")
+
+```
+
+In Figure 1, the content inside the boxes will always have one of:
+
+* Only a key: - Students:, 1:, Sport: 
+* Only a value - Basketball, Soccer 
+* A key:value pair - ID:101, Name:John 
+* Empty - Not Illustrated in Figure 1.
+
+## Summary
+
+To summarize, JSON stores data in hierarchies. This structure allows JSON data to be more flexible than traditional tabular data. Once you get past the unfamiliarity of the syntax, JSON also begins to be more intuitive when needing to store relational data. If you are not yet motivated to give JSON or thinking of having data stored in hierarchies a chance, I also wanted to show that tabular data is in fact hierarchical in disguise.
+
+# Unmasking Tabular Data
+
+As mentioned earlier, my second goal is to help illustrate how the underlying structure of tabular data is actually very similar to JSON. Moving forward I want to be more specific and state that they are similar because you can also think about tables as hierarchical trees but with a few more "rules" or properties that they have to follow (I wrap rules in quotation marks, because these rules are implicitly found when the data is organized).
+
+We will return to using the first table we created at the start of this post before talking about data with multiple responses:
+
+```{r tableRef1}
+t1
+```
+
+We alluded earlier that there is another way to store the table in a hierarchical structure compared to how we did it in the first half of this post. We will create a new diagram to help illustrate and guide our discussion (as a challenge to you, try to think of how this diagram will be represented in JSON syntax):
+
+```{r diagramm2, fig.cap="Table 1 Restructured as a Tree", out.height="300px", out.width="100%", fig.align='center'}
+# Alternative Table 1 Hierarchical Tree Structure
+DiagrammeR::grViz("
+digraph students {
+
+node [shape = square, fontname = \"Open Sans\"]
+'Students:'
+
+node [shape = rectangle, fixedsize = true]
+'Row:'; 'ID:'; 'Name:'; 'Age:'; 'Major:'
+
+node [height = 1, width = 1.2]
+'Rows' [shape = record, label = '{ 1 | 2 | 3 }']
+
+'IDs' [shape = record, label = '{ 101 | 102 | 103 }']
+       
+'Names' [shape = record, label = '{ John | James | Barry }']
+         
+'Ages' [shape = record, label = '{ 21 | 22 | 19 }']
+        
+'Majors' [shape = record, label = '{ Comp. Sci. | English | Psychology }']
+
+# Edges
+edge [arrowhead = none]
+'Students:' -> {'Row:'; 'ID:', 'Name:', 'Age:', 'Major:'}
+'Row:' -> 'Rows'
+'ID:' -> 'IDs'
+'Name:' -> 'Names'
+'Age:' -> 'Ages'
+'Major:' -> 'Majors'
+
+}
+
+")
+
+```
+
+There are a couple of noticable changes in our diagram compared to Figure 1. But before we discuss the changes I want to avoid confusion with different terms people commonly use. Usually tables are discussed with columns & cells while JSON uses keys & values. Since we will stick to using the "tree" analogy to make our points, the following terms are all equivalent: 
+
+```{r terms}
+# Define Terms
+tibble(
+  Table = c("Column", "Cell"),
+  Is2 = c("=", "="),
+  JSON = c("Key", "Value"),
+  Is1 = c("=", "="),
+  Tree = c("Branch", "Leaf")) %>% 
+  kable(caption = "Terms", 
+    col.names = c("Table", "", "JSON", "", "Tree")) %>% 
+  kable_styling(full_width = FALSE)
+
+```
+
+The first change we made is the orientation of the tree. Our diagram starts at the top and goes down instead of left to right. This is only a cosmetic change and done to keep it visually aligned with how tables are presented, but it also does help show how tables can be hierarchical.
+
+The second change you will notice is that the leaves for each of the branches (i.e. "ID:", "Name:") are stacked together instead of being seperated. This is done on purpose because tables have extra "rules" that they must follow. Our diagram is modified to illustrate these rules.
+
+* Rule #1 - While there are no limits on how many leaves can come out of a branch, leaves from a table are ordered.
+
+That is why our leaves our stacked togethor. The order is important within tables and can lead to different interpretations if not done correctly. This order leads to our second rule and third noticable change in our diagram.
+
+The change in our diagram is we have a new branch called "Row:" that you don't find in the original table. 
+
+* Rule #2 - All tables have a unique branch that is used to keep track of the order of leaves found on other branches. 
+
+Not all tables explicitly show this branch, but it is always there. We made it explicit to show its existence. The default for most tables is to reference the order of leaves as a row with corresponding unique numbers. As an example, you can open up any Excel spreadsheet and the left side margin will always show the row numbers to help you keep track of where you are no matter how many branches (columns) you have in your spreadsheet. This branch helps make relational inferances between leaves across the branches. The first leaf on every branch is related, the second are all related, and etc...
+
+There is another rule you should be aware of that our table does not currently illustrate. 
+
+* Rule #3 - There is no limit for how many branches can be found on a tree but all branches need to have the same number of leaves. 
+
+Since the leaves from tables are ordered, this rule is important to keep track of what data is missing. As an example, we can add another branch called housing that represents whether students are living on campus (Dorm) or if they are communiting (Commute). The following illustrates what would happen if our new branch only has two leaves.
+
+```{r diagramm3, fig.align='center', fig.cap="Adding a Branch With Fewer Leaves", out.height="200px", out.width="100%"}
+# Figure 3: Two Different Branches with Different Interpretations
+
+DiagrammeR::grViz("
+digraph students {
+
+node [shape = rectangle, fontname = 'Open Sans']
+
+subgraph cluster_1 {
+  H1 [label = 'Housing:']
+  A [shape = record, height = .5, label = '{ Dorm | Commute }'];
+  H1 -> A [arrowhead = none];
+  label = 'Branch 1';
+  color = white;
+  fontname = 'Open Sans'
+}
+
+'Convert_to' [shape = plaintext, label = 'Will convert \nto']
+
+subgraph cluster_2 {
+  H2 [label = 'Housing:']
+  B [shape = record, height = .5, label = '{ Dorm | Commute| }'];
+  H2 -> B [arrowhead = none];
+  label = 'Branch 2';
+  color = white;
+  fontname = 'Open Sans'
+}
+
+'NotEqual' [shape = plaintext, label = 'And not']
+
+subgraph cluster_3 {
+  H3 [label = 'Housing:']
+  C [shape = record, label = '{ Dorm | | Commute }'];
+  H3 -> C [arrowhead = none]; 
+  label = 'Branch 3';
+  color = white;
+  fontname = 'Open Sans'
+}
+
+}
+")
+
+```
+
+Because order matters, if we add branch 1 to our diagram, it first gets converted to branch 2 which would be interpreted as John commuting and Barry is dorming on campus, but the living situation of James is unknown. With branch 3, John is still commuting but now James is dorming and we don't know anything about John. If branch 3 is what we originally wanted to add into our diagram, we have to careful the number of leaves on our branch is the same as the other branches. We can not rely on the implicit conversion that takes place because it might turn into something that we did not mean. 
+
+If we add a branch that has more leaves than the other branches in our diagramm, the opposite occurs. The rest of the branches add the number of leaves needed be the same length but the leaves will be empty/missing. 
+
+## Summary
+
+Through the illustration I hope I was able to demonstrate how tabular data is not to different from JSON and or hierarchical data. You can fundamentally look at tables the same way as JSON, but just with some constraints. My goal for today was not to make a case that one is better than the other, but just to show how they are similar. By seeing how they are in common, you can start seeing different solutions for problems you may face when working with either structure just like what had happened to me.
+
+In part two, I will continue the discussion of JSON by incorporating R lists. 
+
+# Source Code for Tables & Figures
+```{r all code, ref.label=all_labels(), echo=TRUE, eval=FALSE}
+
+```

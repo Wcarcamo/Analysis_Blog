@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Visualization on Will Carcamo</title>
+    <link>/topics/data-visualization/</link>
+    <description>Recent content in Data Visualization on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 25 Jun 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/topics/data-visualization/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Special ggplot2 Variables</title>
+      <link>/2019/06/25/special-ggplot2-variables/</link>
+      <pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/06/25/special-ggplot2-variables/</guid>
+      <description>Data Visualization in R &amp;amp; LabelsI often treat building data visualizations in R as a fun puzzle. Prior to learning how to use ggplot2, I would do all of my graphs in excel. Making eye catching graphs in excel is often easier and quicker (especially if you follow Stephanie Evergreen). One feature that I really enjoy in excel is the ease of adding/removing data point labels and re-positioning them with a mouse to get them exactly where I want them, but excel is a tool designed by others for general use and has its own limitations.</description>
+    </item>
+    
+  </channel>
+</rss>

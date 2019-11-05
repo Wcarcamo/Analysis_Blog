@@ -3,13 +3,13 @@ title: 'Learning Python: The Beginning'
 author: ~
 date: '2019-05-31'
 slug: learning-python-the-beginning
-categories: []
+categories: ['Python']
 tags: ['Python', 'Select', 'Filter', 'TidyTuesday_Python']
-description: ''
-topics: []
+description: 'Learning Python. Translating common data tasks done in R with Python syntax.'
+topics: ['Python']
 ---
 
-```{r, setup, echo=FALSE}
+```{r setup, echo=FALSE}
 # Set up options for rmarkdown chunks
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#")
 ```
@@ -28,13 +28,13 @@ In this post, I will just try to practice my typical R tidyverse workflow of:
 
 The **reticulate** package helps integrate Python into your rmarkdown scripts. After loading the package, you are suggested to specify which environment to use Python. I am still confused on how exactly to do this but I found the following code to be most stable to start my script especially if I have to leave and come back later to finish it. 
 
-```{r, setup-python}
+```{r setup-python}
 library(reticulate)
 use_virtualenv("r-reticulate")
 ```
 
 ## Load Modules and Data
-```{python, load}
+```{python load}
 import pandas as pd
 import numpy as np
 
@@ -42,7 +42,7 @@ url = 'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data
 dat = pd.read_csv(url, index_col=0)
 ```
 
-```{python, options}
+```{python options}
 # Stop Python from truncating number of columns
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 1000)
@@ -52,13 +52,13 @@ pd.set_option('precision', 2)
 # Previewing the Data
 
 ## View Data in Rstudio
-```{r, view_data}
+```{r view_data}
 View(py$dat)
 ```
 
 ## Understanding the Big Picture of a Dataset
 
-```{python, summary}
+```{python summary}
 dat.info() # General Info (i.e. columns, non-null entries, data types)
 dat.head(5) # View top 5 rows of the data
 dat.price.describe() # Describe basic statistics for numeric columns
@@ -68,7 +68,7 @@ dat.country.describe() # Describe non-numeric (strings) columns
 The *describe()* function returns certain information depending on the column type selected (i.e. integers or strings). However, using *describe()* without selecting any column prior will run *describe()* on all numeric data types only.
 
 # Selecting Columns 
-```{python, select}
+```{python select}
 # How to find index of a column, using region_2 as example
 dat.columns.get_loc('region_2')
 dat.country.head(5) #Select column by name
@@ -80,7 +80,7 @@ dat.iloc[:, np.r_[2:4, 9:12]].head(5) # Combine Multiple and Slice
 ```
 
 # Filter Rows
-```{python, filter}
+```{python filter}
 dat[dat['country'] == "US"].count() # Filtering String Columns
 dat[dat['price'] > 500].count() # Filtering Strings
 dat.query('price > 500').count() # Filter by query

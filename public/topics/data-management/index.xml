@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Management on Will Carcamo</title>
+    <link>/topics/data-management/</link>
+    <description>Recent content in Data Management on Will Carcamo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/topics/data-management/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Using VBA To Aggregate Excel Data</title>
+      <link>/2019/11/02/vba/</link>
+      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/11/02/vba/</guid>
+      <description>Visual Basic for ApplicationsBack in August, I learned that with Microsoft Office products (i.e. Word, Excel, Access) you can write your own macros to help automate repetative tasks or create your own needed office functions that are not standard with office products to improve your workflow. I give props to Microsoft, because I have definitely been frustrated at times and wishing for more functionality from their products, but I understand they reach a global market and it is not possible to program everything people need in their products.</description>
+    </item>
+    
+    <item>
+      <title>JSON, Tabular Data, &amp; R Lists: Part 1</title>
+      <link>/2019/10/30/json-tabular-data-r-lists-part-1/</link>
+      <pubDate>Wed, 30 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/30/json-tabular-data-r-lists-part-1/</guid>
+      <description>InspirationI was recently asked if I could help out with a project that involved parsing out JSON (JavaScript Object Notation) data. I am really grateful that I become involved on this because I had no prior experience with JSON structured data but the knowledge I gained from some of the challenges I ran into has been priceless. The project led to a major paradigm shift that has now helped me understand valuable programming ideas (i.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,917 @@
+---
+title: 'JSON, Tabular Data, & R Lists: Part 1'
+author: ~
+date: '2019-10-30'
+slug: json-tabular-data-r-lists-part-1
+categories: ['JSON', 'Data Management']
+tags: ['JSON', 'Data Management']
+description: 'Learning about JSON'
+topics: ['JSON', 'Data Management']
+---
+
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/bsTable/bootstrapTable.min.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/viz/viz.js"></script>
+<link href="/rmarkdown-libs/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/grViz-binding/grViz.js"></script>
+
+
+<div id="inspiration" class="section level1">
+<h1>Inspiration</h1>
+<p>I was recently asked if I could help out with a project that involved parsing out JSON (JavaScript Object Notation) data. I am really grateful that I become involved on this because I had no prior experience with JSON structured data but the knowledge I gained from some of the challenges I ran into has been priceless. The project led to a major paradigm shift that has now helped me understand valuable programming ideas (i.e. the beauty of R’s <strong>list</strong> data type and the <em><strong>purrr</strong></em> package) that I have always fundamentally stuggled with and thus lacked the motivation to implement in my coding to solve problems.</p>
+</div>
+<div id="introduction-to-json" class="section level1">
+<h1>Introduction to JSON</h1>
+<p>My goals for today are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Help bring exposure to how data is stored and represented in JSON compared to tabular data (i.e. spreadsheets &amp; tables). We will focus on building a conceptual understanding and not dive too deep on the specific JSON syntax.</p></li>
+<li><p>Illustrate that on the surface data stored in a tabular structure is not inherently different from JSON. In other words, Underneath the hood all tabular data can easily be thought of as JSON-like, but not all JSON data can be thought of as tabular.</p></li>
+</ol>
+<p>Part 2 of this series will look into more depth on <strong>how</strong> all tabular data can be thought of as just JSON by discussing R’s <strong>list</strong> data type.</p>
+<p>I think it is fair to say that most people (myselft included) who work with data, are conventionally trained to think about storing and using data from a tabular perspective. Most well-known and commonly used software are even built around framing data into tables. For example, knowing how to use Excel is a must for anyone with a career involving data. Storing data in tables is the norm and this can be illustrated by creating the following table below.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:table1">Table 1: </span>Students
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+ID
+</th>
+<th style="text-align:left;">
+Name
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:left;">
+Major
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:left;">
+John
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Computer Science
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:left;">
+James
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+English
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:left;">
+Barry
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+</tr>
+</tbody>
+</table>
+<p>I think most people with any level of data literacy can read the table and understand what is being captured. We can see three different students with their ID, name, age, and major and make a safe assumption that this table holds records of students at some university or college.</p>
+<p>The same data from the table can also be stored into a JSON file. JSON data is stored in <strong>key:value</strong> pairs and the raw syntax for storing our information would look like the following:</p>
+<ul>
+<li>Note - the semicolon ‘<strong>:</strong>’ indicates a key-value pair and white space was added for emphasis and clarity.</li>
+</ul>
+<pre class="r"><code># JSON: Students 
+{ &quot;Students&quot;: [
+    {
+      &quot;ID&quot;    : 101, 
+      &quot;Name&quot;  : &quot;John&quot;, 
+      &quot;Age&quot;   : 21, 
+      &quot;Major&quot; : &quot;Computer Science&quot;
+    },
+    {
+      &quot;ID&quot;    : 102, 
+      &quot;Name&quot;  : &quot;James&quot;, 
+      &quot;Age&quot;   : 22, 
+      &quot;Major&quot; : &quot;English&quot;
+    },
+    {
+      &quot;ID&quot;    : 103, 
+      &quot;Name&quot;  : &quot;Barry&quot;, 
+      &quot;Age&quot;   : 19, 
+      &quot;Major&quot; : &quot;Psychology&quot;
+    },
+  ]
+}</code></pre>
+<p>For simple cases like the one provide, I think JSON is straight forward and could be read and understood by most just as easily as the table, but I admit the table is far cleaner and concise. JSON is however more flexibile with how the same data can be stored. I will provide another example in the second half of this post but for now this will be the example to help us further understand JSON’s structure.</p>
+</div>
+<div id="comparing-tabular-and-json-data" class="section level1">
+<h1>Comparing Tabular and JSON Data</h1>
+<p>By now, I hope you are somewhat interested in JSON but I also expect some readers to be thinking something along the lines of, “I can see how the simple data is stored in JSON but why should I care about it and continue reading when the table works just fine, simple to understand and use, and can be used to reach a broader audience?” In my opinion, I think one major reason is because there is a very common problem that arises when working with and managing data from a tabular perspective that is not often discussed unless you are a database manager or care deeply about technical issues when storing and retrieving data. The problem boils down to, what do you do when a record of data can take more than one response?</p>
+<div id="handling-data-with-more-than-one-response" class="section level2">
+<h2>Handling Data With More Than One Response</h2>
+<p>There are usually more than one way to solve a problem, but different methods always tend to have trade-offs. We will see the trade-offs between tabular data and JSON when we have to capture data that can take on more than one response. Although tables are clean and intuitive, Tabular data can only take <strong>one response/value</strong> for each row and column. Right now our table is simple and all of our columns have one possible response per student, but sometimes we need to data that can take more than one response.</p>
+<p>Lets say we want to keep track of different intramural sports students are participating in this year.</p>
+<ul>
+<li>John is in basketball and soccer</li>
+<li>James is not in any sport</li>
+<li>Barry is in baseball</li>
+</ul>
+<p>To add this data into our table we have <strong>three options</strong>.</p>
+<div id="table-option-1" class="section level3">
+<h3>Table Option 1:</h3>
+<p>The first option is to make our original table <strong>wider</strong> by adding the different sports as individual columns and entering a yes/no response for each sport.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:wide">Table 2: </span>Wide - Students &amp; Intramural Sports
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+ID
+</th>
+<th style="text-align:left;">
+Name
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:left;">
+Major
+</th>
+<th style="text-align:left;">
+Basketball
+</th>
+<th style="text-align:left;">
+Soccer
+</th>
+<th style="text-align:left;">
+Baseball
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:left;">
+John
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Computer Science
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:left;">
+No
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:left;">
+James
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+English
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+No
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:left;">
+Barry
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+</tr>
+</tbody>
+</table>
+<p>For small datasets, this is fine and and commonly seen in real-world applications. It works for small applications but if you try to scale up the number of potential problems maintaining and using this dataset can grow exponentially. In our example we’ve only captured three different sports from three different students but if we would expand our dataset to mimic a real school campus, our table will have thousands of students and require many more columns to be added for all the potential sports offered. There will be a lot of wasted space and it would be cumbersome to add yes/no for each individual on all available sports.</p>
+</div>
+<div id="table-option-2" class="section level3">
+<h3>Table Option 2:</h3>
+<p>The second option, is to make the table <strong>longer</strong> by adding only one new column that captures the individual sports.</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:long">Table 3: </span>Long - Students &amp; Intramural Sports
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+ID
+</th>
+<th style="text-align:left;">
+Name
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:left;">
+Major
+</th>
+<th style="text-align:left;">
+Sport
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:left;">
+John
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Computer Science
+</td>
+<td style="text-align:left;">
+Basketball
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:left;">
+John
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Computer Science
+</td>
+<td style="text-align:left;">
+Soccer
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:left;">
+James
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+English
+</td>
+<td style="text-align:left;">
+None
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:left;">
+Barry
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+<td style="text-align:left;">
+Baseball
+</td>
+</tr>
+</tbody>
+</table>
+<p>Now we don’t have to worry about yes/no responses and can focus only on one column. But making a table longer as we’ve done has its own issues. While we now have only one column for sports, we’ve introduced duplicates in the rest of the table. John participates in more than one sport and rows are duplicated to the same number of sports they are in. This table is still “usable” at this scale but similar to the wide table option the potential for running into problems and having to clean for duplicates during analysis becomes more difficult to deal with when applied to real-world contexts.</p>
+</div>
+<div id="table-option-3" class="section level3">
+<h3>Table Option 3:</h3>
+<p>The third option we have (and highly recommended) is to create a <strong>new table</strong> that can be linked back to our first table. This is where relational database management systems have historically shined (i.e. MySQL, Oracle, Access). In our example we will use the student’s ID to link between our tables.</p>
+<table align="center">
+<tr valign="top">
+<td>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:table1">Table 1: </span>Students
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+ID
+</th>
+<th style="text-align:left;">
+Name
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:left;">
+Major
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:left;">
+John
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Computer Science
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:left;">
+James
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+English
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:left;">
+Barry
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td width="50em">
+</td>
+<td>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:relational">Table 4: </span>Intramurals
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+ID
+</th>
+<th style="text-align:left;">
+Sport
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;width: 4em; ">
+101
+</td>
+<td style="text-align:left;width: 4em; ">
+Basketball
+</td>
+</tr>
+<tr>
+<td style="text-align:right;width: 4em; ">
+101
+</td>
+<td style="text-align:left;width: 4em; ">
+Soccer
+</td>
+</tr>
+<tr>
+<td style="text-align:right;width: 4em; ">
+103
+</td>
+<td style="text-align:left;width: 4em; ">
+Baseball
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</table>
+<p>Admittedly, by having two tables it does make it harder for humans to intuitively understand what is going on compared to the wide or longer table. However, as mentioned earlier when datasets scale, this method will be far less prone to errors (although not infallible), easier to manage, and computers will be far more efficient when analyzing data stored in this method.</p>
+</div>
+<div id="multiple-responses-in-json" class="section level3">
+<h3>Multiple Responses in JSON</h3>
+<p>So how would JSON store this type of information? JSON takes a different approach to store data. Instead of becoming “wider”, “longer”, or having to make a whole “new table”, data is embedded <strong>“deeper”</strong> within itself. JSON data is stored with a hierarchical structure in mind. In other words, JSON takes a tree-like form and data can continually be further nested upon itself. We will stick with the tree-like analogy to help us illustrate our points. Key:value pairs can be thought of as branches:leaves.</p>
+<p>With this metaphor, we can discuss a natural phenomena that on any given branch on a tree you can find one or more leaves (and sometimes no leaves at all). Similarly, JSON keys (branches) can have more than one value (leaves) without it being a problem as faced with tables.</p>
+<p>This property allows for intrinsically related data stay closer togethor instead of being split apart and needing to be linked together again by some other variable. We demonstrate in the syntax below that the values for the key “Sport” are indented in the next line to show the data being stored is nested deeper in the tree.</p>
+<ul>
+<li>Note - I overemphasized the indentation for demonstrational purposes and responses are wrapped in brackets [ ] to symbolize more than one possible value, even if they only contain one response or the branch is empty.</li>
+</ul>
+<pre class="r"><code># JSON: Students &amp; Intramurals
+{ &quot;Students&quot;: [
+    {
+      &quot;ID&quot;    : 101, 
+      &quot;Name&quot;  : &quot;John&quot;, 
+      &quot;Age&quot;   : 21, 
+      &quot;Major&quot; : &quot;Computer Science&quot;,
+      &quot;Sport&quot; : [
+                  &quot;Basketball&quot;, 
+                  &quot;Soccer&quot;
+                ]
+    },
+    {
+      &quot;ID&quot;    : 102, 
+      &quot;Name&quot;  : &quot;James&quot;, 
+      &quot;Age&quot;   : 22, 
+      &quot;Major&quot; : &quot;English&quot;,
+      &quot;Sport&quot; : []
+    },
+    {
+      &quot;ID&quot;    : 103, 
+      &quot;Name&quot;  : &quot;Barry&quot;, 
+      &quot;Age&quot;   : 19, 
+      &quot;Major&quot; : &quot;Psychology&quot;,
+      &quot;Sport&quot; : [
+                  &quot;Baseball&quot;
+                ]
+    }
+  ]
+}</code></pre>
+<p>Not only can branches have more than one leaf, branches can also contain another branch with their own leaves. Theoretically, there are no limits for how many branches can be nested on another branch. I don’t know if you noticed but there are actually 3 branches that stem from our starting tree branch of “students”. Each of these 3 branches have their own key:value pairs of data.</p>
+<p>To help illustrate the points being made above, I made a diagram with the help of the <em><strong>DiagrammeR</strong></em> package to show the tree-like structure. To save space I only show the first student branched out but the same can be applied to the other students.</p>
+<div class="figure" style="text-align: center"><span id="fig:diagrammeR1"></span>
+<div id="htmlwidget-1" style="width:100%;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ndigraph students {\n\ngraph [rankdir = LR]\n\nnode [shape = square, fontname = \"Open Sans\"]\n\"Students:\"; \"1:\"; \"2:\"; \"3:\"\n\nnode [shape = rectangle, width = 1]\n\"ID: \n101\"; \"Name: \nJohn\"; \"Age: \n21\"; \"Major: \nComputer \nScience\"; \"Sport:\"\n\nedge [arrowhead = none]\n\"Students:\" -> {\"1:\", \"2:\", \"3:\"}\n\"1:\" -> {\"ID: \n101\", \"Name: \nJohn\", \"Age: \n21\", \"Major: \nComputer \nScience\", \"Sport:\"}\n\"Sport:\" -> {\"Basketball\", \"Soccer\"}\n\"2:\" -> \"ID: \n...\"\n\"3:\" -> \"...\"\n\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 1: Nested JSON data branched out for Student #1
+</p>
+</div>
+<p>In Figure 1, the content inside the boxes will always have one of:</p>
+<ul>
+<li>Only a key: - Students:, 1:, Sport:</li>
+<li>Only a value - Basketball, Soccer</li>
+<li>A key:value pair - ID:101, Name:John</li>
+<li>Empty - Not Illustrated in Figure 1.</li>
+</ul>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>To summarize, JSON stores data in hierarchies. This structure allows JSON data to be more flexible than traditional tabular data. Once you get past the unfamiliarity of the syntax, JSON also begins to be more intuitive when needing to store relational data. If you are not yet motivated to give JSON or thinking of having data stored in hierarchies a chance, I also wanted to show that tabular data is in fact hierarchical in disguise.</p>
+</div>
+</div>
+<div id="unmasking-tabular-data" class="section level1">
+<h1>Unmasking Tabular Data</h1>
+<p>As mentioned earlier, my second goal is to help illustrate how the underlying structure of tabular data is actually very similar to JSON. Moving forward I want to be more specific and state that they are similar because you can also think about tables as hierarchical trees but with a few more “rules” or properties that they have to follow (I wrap rules in quotation marks, because these rules are implicitly found when the data is organized).</p>
+<p>We will return to using the first table we created at the start of this post before talking about data with multiple responses:</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:table1">Table 1: </span>Students
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+ID
+</th>
+<th style="text-align:left;">
+Name
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:left;">
+Major
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+101
+</td>
+<td style="text-align:left;">
+John
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Computer Science
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:left;">
+James
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+English
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:left;">
+Barry
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Psychology
+</td>
+</tr>
+</tbody>
+</table>
+<p>We alluded earlier that there is another way to store the table in a hierarchical structure compared to how we did it in the first half of this post. We will create a new diagram to help illustrate and guide our discussion (as a challenge to you, try to think of how this diagram will be represented in JSON syntax):</p>
+<div class="figure" style="text-align: center"><span id="fig:diagramm2"></span>
+<div id="htmlwidget-2" style="width:100%;height:300px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"diagram":"\ndigraph students {\n\nnode [shape = square, fontname = \"Open Sans\"]\n\"Students:\"\n\nnode [shape = rectangle, fixedsize = true]\n\"Row:\"; \"ID:\"; \"Name:\"; \"Age:\"; \"Major:\"\n\nnode [height = 1, width = 1.2]\n\"Rows\" [shape = record, label = \"{ 1 | 2 | 3 }\"]\n\n\"IDs\" [shape = record, label = \"{ 101 | 102 | 103 }\"]\n       \n\"Names\" [shape = record, label = \"{ John | James | Barry }\"]\n         \n\"Ages\" [shape = record, label = \"{ 21 | 22 | 19 }\"]\n        \n\"Majors\" [shape = record, label = \"{ Comp. Sci. | English | Psychology }\"]\n\n# Edges\nedge [arrowhead = none]\n\"Students:\" -> {\"Row:\"; \"ID:\", \"Name:\", \"Age:\", \"Major:\"}\n\"Row:\" -> \"Rows\"\n\"ID:\" -> \"IDs\"\n\"Name:\" -> \"Names\"\n\"Age:\" -> \"Ages\"\n\"Major:\" -> \"Majors\"\n\n}\n\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 2: Table 1 Restructured as a Tree
+</p>
+</div>
+<p>There are a couple of noticable changes in our diagram compared to Figure 1. But before we discuss the changes I want to avoid confusion with different terms people commonly use. Usually tables are discussed with columns &amp; cells while JSON uses keys &amp; values. Since we will stick to using the “tree” analogy to make our points, the following terms are all equivalent:</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:terms">Table 5: </span>Terms
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Table
+</th>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+JSON
+</th>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+Tree
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Column
+</td>
+<td style="text-align:left;">
+=
+</td>
+<td style="text-align:left;">
+Key
+</td>
+<td style="text-align:left;">
+=
+</td>
+<td style="text-align:left;">
+Branch
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cell
+</td>
+<td style="text-align:left;">
+=
+</td>
+<td style="text-align:left;">
+Value
+</td>
+<td style="text-align:left;">
+=
+</td>
+<td style="text-align:left;">
+Leaf
+</td>
+</tr>
+</tbody>
+</table>
+<p>The first change we made is the orientation of the tree. Our diagram starts at the top and goes down instead of left to right. This is only a cosmetic change and done to keep it visually aligned with how tables are presented, but it also does help show how tables can be hierarchical.</p>
+<p>The second change you will notice is that the leaves for each of the branches (i.e. “ID:”, “Name:”) are stacked together instead of being seperated. This is done on purpose because tables have extra “rules” that they must follow. Our diagram is modified to illustrate these rules.</p>
+<ul>
+<li>Rule #1 - While there are no limits on how many leaves can come out of a branch, leaves from a table are ordered.</li>
+</ul>
+<p>That is why our leaves our stacked togethor. The order is important within tables and can lead to different interpretations if not done correctly. This order leads to our second rule and third noticable change in our diagram.</p>
+<p>The change in our diagram is we have a new branch called “Row:” that you don’t find in the original table.</p>
+<ul>
+<li>Rule #2 - All tables have a unique branch that is used to keep track of the order of leaves found on other branches.</li>
+</ul>
+<p>Not all tables explicitly show this branch, but it is always there. We made it explicit to show its existence. The default for most tables is to reference the order of leaves as a row with corresponding unique numbers. As an example, you can open up any Excel spreadsheet and the left side margin will always show the row numbers to help you keep track of where you are no matter how many branches (columns) you have in your spreadsheet. This branch helps make relational inferances between leaves across the branches. The first leaf on every branch is related, the second are all related, and etc…</p>
+<p>There is another rule you should be aware of that our table does not currently illustrate.</p>
+<ul>
+<li>Rule #3 - There is no limit for how many branches can be found on a tree but all branches need to have the same number of leaves.</li>
+</ul>
+<p>Since the leaves from tables are ordered, this rule is important to keep track of what data is missing. As an example, we can add another branch called housing that represents whether students are living on campus (Dorm) or if they are communiting (Commute). The following illustrates what would happen if our new branch only has two leaves.</p>
+<div class="figure" style="text-align: center"><span id="fig:diagramm3"></span>
+<div id="htmlwidget-3" style="width:100%;height:200px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"diagram":"\ndigraph students {\n\nnode [shape = rectangle, fontname = \"Open Sans\"]\n\nsubgraph cluster_1 {\n  H1 [label = \"Housing:\"]\n  A [shape = record, height = .5, label = \"{ Dorm | Commute }\"];\n  H1 -> A [arrowhead = none];\n  label = \"Branch 1\";\n  color = white;\n  fontname = \"Open Sans\"\n}\n\n\"Convert_to\" [shape = plaintext, label = \"Will convert \nto\"]\n\nsubgraph cluster_2 {\n  H2 [label = \"Housing:\"]\n  B [shape = record, height = .5, label = \"{ Dorm | Commute| }\"];\n  H2 -> B [arrowhead = none];\n  label = \"Branch 2\";\n  color = white;\n  fontname = \"Open Sans\"\n}\n\n\"NotEqual\" [shape = plaintext, label = \"And not\"]\n\nsubgraph cluster_3 {\n  H3 [label = \"Housing:\"]\n  C [shape = record, label = \"{ Dorm | | Commute }\"];\n  H3 -> C [arrowhead = none]; \n  label = \"Branch 3\";\n  color = white;\n  fontname = \"Open Sans\"\n}\n\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+Figure 3: Adding a Branch With Fewer Leaves
+</p>
+</div>
+<p>Because order matters, if we add branch 1 to our diagram, it first gets converted to branch 2 which would be interpreted as John commuting and Barry is dorming on campus, but the living situation of James is unknown. With branch 3, John is still commuting but now James is dorming and we don’t know anything about John. If branch 3 is what we originally wanted to add into our diagram, we have to careful the number of leaves on our branch is the same as the other branches. We can not rely on the implicit conversion that takes place because it might turn into something that we did not mean.</p>
+<p>If we add a branch that has more leaves than the other branches in our diagramm, the opposite occurs. The rest of the branches add the number of leaves needed be the same length but the leaves will be empty/missing.</p>
+<div id="summary-1" class="section level2">
+<h2>Summary</h2>
+<p>Through the illustration I hope I was able to demonstrate how tabular data is not to different from JSON and or hierarchical data. You can fundamentally look at tables the same way as JSON, but just with some constraints. My goal for today was not to make a case that one is better than the other, but just to show how they are similar. By seeing how they are in common, you can start seeing different solutions for problems you may face when working with either structure just like what had happened to me.</p>
+<p>In part two, I will continue the discussion of JSON by incorporating R lists.</p>
+</div>
+</div>
+<div id="source-code-for-tables-figures" class="section level1">
+<h1>Source Code for Tables &amp; Figures</h1>
+<pre class="r"><code>knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+options(kableExtra.html.bsTable = TRUE)
+
+# Load Packages
+library(tidyverse)
+library(rio)
+library(here)
+library(knitr)
+library(kableExtra)
+
+# Table 1: Students
+t1 &lt;- tibble(
+  ID = c(101, 102, 103),
+  Name = c(&quot;John&quot;, &quot;James&quot;, &quot;Barry&quot;),
+  Age = c(21, 22, 18),
+  Major = c(&quot;Computer Science&quot;, &quot;English&quot;, &quot;Psychology&quot;)) %&gt;% 
+  kable(caption = &quot;Students&quot;) %&gt;% 
+  kable_styling(full_width = FALSE)
+
+t1
+
+# JSON: Students 
+{ &quot;Students&quot;: [
+    {
+      &quot;ID&quot;    : 101, 
+      &quot;Name&quot;  : &quot;John&quot;, 
+      &quot;Age&quot;   : 21, 
+      &quot;Major&quot; : &quot;Computer Science&quot;
+    },
+    {
+      &quot;ID&quot;    : 102, 
+      &quot;Name&quot;  : &quot;James&quot;, 
+      &quot;Age&quot;   : 22, 
+      &quot;Major&quot; : &quot;English&quot;
+    },
+    {
+      &quot;ID&quot;    : 103, 
+      &quot;Name&quot;  : &quot;Barry&quot;, 
+      &quot;Age&quot;   : 19, 
+      &quot;Major&quot; : &quot;Psychology&quot;
+    },
+  ]
+}
+
+# Wide Table: Students &amp; Intramurals
+tibble(
+  ID = c(101, 102, 103),
+  Name = c(&quot;John&quot;, &quot;James&quot;, &quot;Barry&quot;),
+  Age = c(21, 22, 18),
+  Major = c(&quot;Computer Science&quot;, &quot;English&quot;, &quot;Psychology&quot;),
+  Basketball = c(&quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;),
+  Soccer = c(&quot;Yes&quot;, &quot;No&quot;, &quot;No&quot;),
+  Baseball = c(&quot;No&quot;, &quot;No&quot;, &quot;Yes&quot;)) %&gt;% 
+  kable(caption = &quot;Wide - Students &amp; Intramural Sports&quot;) %&gt;% 
+  kable_styling(full_width = FALSE)
+
+# Long Table: Students &amp; Intramurals
+tibble(
+  ID = c(101, 101, 102, 103),
+  Name = c(&quot;John&quot;, &quot;John&quot;, &quot;James&quot;, &quot;Barry&quot;),
+  Age = c(21, 21, 22, 18),
+  Major = c(&quot;Computer Science&quot;, &quot;Computer Science&quot;, &quot;English&quot;,
+    &quot;Psychology&quot;),
+  Sport = c(&quot;Basketball&quot;, &quot;Soccer&quot;, &quot;None&quot;, &quot;Baseball&quot;)) %&gt;% 
+  kable(caption = &quot;Long - Students &amp; Intramural Sports&quot;) %&gt;% 
+  kable_styling(full_width = FALSE)
+
+# Table 2: Intramurals
+t2 &lt;- tibble(
+  ID = c(101, 101, 103),
+  Sport = c(&quot;Basketball&quot;, &quot;Soccer&quot;, &quot;Baseball&quot;)) %&gt;% 
+  kable(caption = &quot;Intramurals&quot;) %&gt;% 
+  kable_styling(full_width = FALSE) %&gt;% 
+  column_spec(c(1,2), width = &quot;4em&quot;)
+
+# Combining Table 1 &amp; 2 as one figure and shown side by side in HTML
+cat(c(&#39;&lt;table align=&quot;center&quot;&gt;&lt;tr valign=&quot;top&quot;&gt;&#39;,
+  &#39;&lt;td&gt;&#39;, t1, &#39;&lt;/td&gt;&#39;, 
+  &#39;&lt;td width=&quot;50em&quot;&gt;&#39;, &#39;&lt;/td&gt;&#39;,
+  &#39;&lt;td&gt;&#39;, t2, &#39;&lt;/td&gt;&#39;,
+  &#39;&lt;/tr&gt;&lt;/table&gt;&#39;), sep = &#39;&#39;)
+
+# JSON: Students &amp; Intramurals
+{ &quot;Students&quot;: [
+    {
+      &quot;ID&quot;    : 101, 
+      &quot;Name&quot;  : &quot;John&quot;, 
+      &quot;Age&quot;   : 21, 
+      &quot;Major&quot; : &quot;Computer Science&quot;,
+      &quot;Sport&quot; : [
+                  &quot;Basketball&quot;, 
+                  &quot;Soccer&quot;
+                ]
+    },
+    {
+      &quot;ID&quot;    : 102, 
+      &quot;Name&quot;  : &quot;James&quot;, 
+      &quot;Age&quot;   : 22, 
+      &quot;Major&quot; : &quot;English&quot;,
+      &quot;Sport&quot; : []
+    },
+    {
+      &quot;ID&quot;    : 103, 
+      &quot;Name&quot;  : &quot;Barry&quot;, 
+      &quot;Age&quot;   : 19, 
+      &quot;Major&quot; : &quot;Psychology&quot;,
+      &quot;Sport&quot; : [
+                  &quot;Baseball&quot;
+                ]
+    }
+  ]
+}
+
+# Figure 1: Nested JSON data branched out for student #1
+DiagrammeR::grViz(&quot;
+digraph students {
+
+graph [rankdir = LR]
+
+node [shape = square, fontname = &#39;Open Sans&#39;]
+&#39;Students:&#39;; &#39;1:&#39;; &#39;2:&#39;; &#39;3:&#39;
+
+node [shape = rectangle, width = 1]
+&#39;ID: \n101&#39;; &#39;Name: \nJohn&#39;; &#39;Age: \n21&#39;; &#39;Major: \nComputer \nScience&#39;; &#39;Sport:&#39;
+
+edge [arrowhead = none]
+&#39;Students:&#39; -&gt; {&#39;1:&#39;, &#39;2:&#39;, &#39;3:&#39;}
+&#39;1:&#39; -&gt; {&#39;ID: \n101&#39;, &#39;Name: \nJohn&#39;, &#39;Age: \n21&#39;, &#39;Major: \nComputer \nScience&#39;, &#39;Sport:&#39;}
+&#39;Sport:&#39; -&gt; {&#39;Basketball&#39;, &#39;Soccer&#39;}
+&#39;2:&#39; -&gt; &#39;ID: \n...&#39;
+&#39;3:&#39; -&gt; &#39;...&#39;
+
+}
+&quot;)
+
+t1
+# Alternative Table 1 Hierarchical Tree Structure
+DiagrammeR::grViz(&quot;
+digraph students {
+
+node [shape = square, fontname = \&quot;Open Sans\&quot;]
+&#39;Students:&#39;
+
+node [shape = rectangle, fixedsize = true]
+&#39;Row:&#39;; &#39;ID:&#39;; &#39;Name:&#39;; &#39;Age:&#39;; &#39;Major:&#39;
+
+node [height = 1, width = 1.2]
+&#39;Rows&#39; [shape = record, label = &#39;{ 1 | 2 | 3 }&#39;]
+
+&#39;IDs&#39; [shape = record, label = &#39;{ 101 | 102 | 103 }&#39;]
+       
+&#39;Names&#39; [shape = record, label = &#39;{ John | James | Barry }&#39;]
+         
+&#39;Ages&#39; [shape = record, label = &#39;{ 21 | 22 | 19 }&#39;]
+        
+&#39;Majors&#39; [shape = record, label = &#39;{ Comp. Sci. | English | Psychology }&#39;]
+
+# Edges
+edge [arrowhead = none]
+&#39;Students:&#39; -&gt; {&#39;Row:&#39;; &#39;ID:&#39;, &#39;Name:&#39;, &#39;Age:&#39;, &#39;Major:&#39;}
+&#39;Row:&#39; -&gt; &#39;Rows&#39;
+&#39;ID:&#39; -&gt; &#39;IDs&#39;
+&#39;Name:&#39; -&gt; &#39;Names&#39;
+&#39;Age:&#39; -&gt; &#39;Ages&#39;
+&#39;Major:&#39; -&gt; &#39;Majors&#39;
+
+}
+
+&quot;)
+
+# Define Terms
+tibble(
+  Table = c(&quot;Column&quot;, &quot;Cell&quot;),
+  Is2 = c(&quot;=&quot;, &quot;=&quot;),
+  JSON = c(&quot;Key&quot;, &quot;Value&quot;),
+  Is1 = c(&quot;=&quot;, &quot;=&quot;),
+  Tree = c(&quot;Branch&quot;, &quot;Leaf&quot;)) %&gt;% 
+  kable(caption = &quot;Terms&quot;, 
+    col.names = c(&quot;Table&quot;, &quot;&quot;, &quot;JSON&quot;, &quot;&quot;, &quot;Tree&quot;)) %&gt;% 
+  kable_styling(full_width = FALSE)
+
+# Figure 3: Two Different Branches with Different Interpretations
+
+DiagrammeR::grViz(&quot;
+digraph students {
+
+node [shape = rectangle, fontname = &#39;Open Sans&#39;]
+
+subgraph cluster_1 {
+  H1 [label = &#39;Housing:&#39;]
+  A [shape = record, height = .5, label = &#39;{ Dorm | Commute }&#39;];
+  H1 -&gt; A [arrowhead = none];
+  label = &#39;Branch 1&#39;;
+  color = white;
+  fontname = &#39;Open Sans&#39;
+}
+
+&#39;Convert_to&#39; [shape = plaintext, label = &#39;Will convert \nto&#39;]
+
+subgraph cluster_2 {
+  H2 [label = &#39;Housing:&#39;]
+  B [shape = record, height = .5, label = &#39;{ Dorm | Commute| }&#39;];
+  H2 -&gt; B [arrowhead = none];
+  label = &#39;Branch 2&#39;;
+  color = white;
+  fontname = &#39;Open Sans&#39;
+}
+
+&#39;NotEqual&#39; [shape = plaintext, label = &#39;And not&#39;]
+
+subgraph cluster_3 {
+  H3 [label = &#39;Housing:&#39;]
+  C [shape = record, label = &#39;{ Dorm | | Commute }&#39;];
+  H3 -&gt; C [arrowhead = none]; 
+  label = &#39;Branch 3&#39;;
+  color = white;
+  fontname = &#39;Open Sans&#39;
+}
+
+}
+&quot;)</code></pre>
+</div>
