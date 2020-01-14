@@ -35,15 +35,13 @@ leaflet() %>%
   addPolylines(lng = LA2Sac$lon, lat = LA2Sac$lat)
 ```
 
-I came to Sacramento to take a position working for [LPC Consulting, Inc.](https://lpc-associates.com/){target="_blank"} as a research associate.
+I came to Sacramento to start my career working for [LPC Consulting, Inc.](https://lpc-associates.com/){target="_blank"} as a research associate, but am now working for California Correctional Health Care Services as a research data analyst II.
 
-```{r, lpc}
+```{r, cchcs}
 div(
-  img(src = "https://i.postimg.cc/YS7X6Lxg/lpc.png", alt="lpc", style = "width:200px;height;200px;"),  align = "center"
+  img(src = "https://media.licdn.com/dms/image/C560BAQEK9X6zDJxgiw/company-logo_200_200/0?e=2159024400&v=beta&t=9jELSTsZ_5Nmk3XOKNRQY-MMCG5wJ1l8eRfOiq1gKxw", alt="CCHCS Logo", style = "width:200px;height;200px;"),  align = "center"
 )
 ```
-
-LPC is a research and evaluation consulting firm. As a research associate, I provide support on multiple evaluation projects. My primary strengths lie in statistics and data analysis. However, my work can vary from assisting design program evaluations, create data collection tools, monitor data collection, write reports, and create data visualizations. 
 
 # My Education & Exposure to R
 ```{r, education}

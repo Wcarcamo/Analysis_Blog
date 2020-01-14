@@ -40,14 +40,14 @@ bike_traffic &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rford
 #first six rows
 head(bike_traffic)</code></pre>
 <pre><code>## # A tibble: 6 x 5
-##   date            crossing                   direction bike_count ped_count
-##   &lt;chr&gt;           &lt;chr&gt;                      &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
-## 1 01/01/2014 12:~ Broadway Cycle Track Nort~ North              0        NA
-## 2 01/01/2014 01:~ Broadway Cycle Track Nort~ North              3        NA
-## 3 01/01/2014 02:~ Broadway Cycle Track Nort~ North              0        NA
-## 4 01/01/2014 03:~ Broadway Cycle Track Nort~ North              0        NA
-## 5 01/01/2014 04:~ Broadway Cycle Track Nort~ North              0        NA
-## 6 01/01/2014 05:~ Broadway Cycle Track Nort~ North              0        NA</code></pre>
+##   date              crossing                      direction bike_count ped_count
+##   &lt;chr&gt;             &lt;chr&gt;                         &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;
+## 1 01/01/2014 12:00… Broadway Cycle Track North O… North              0        NA
+## 2 01/01/2014 01:00… Broadway Cycle Track North O… North              3        NA
+## 3 01/01/2014 02:00… Broadway Cycle Track North O… North              0        NA
+## 4 01/01/2014 03:00… Broadway Cycle Track North O… North              0        NA
+## 5 01/01/2014 04:00… Broadway Cycle Track North O… North              0        NA
+## 6 01/01/2014 05:00… Broadway Cycle Track North O… North              0        NA</code></pre>
 <p>The TidyTuesday repository also provides a “data dictionary” table in their repository that defines each variable so we can have a better understanding of what we are working. Instead of recreating it from scratch, I want to attempt to scrape the information from their github page. This might be overkill for a 6 X 3 table but I have recently stumbled upon <a href="https://m-clark.github.io/webR/" target="_blank">Engaging the Web with R</a> by Michael Clark. In it he demonstrated pulling data from a <a href="https://en.wikipedia.org/wiki/List_of_cities,_villages,_and_townships_in_Michigan" target="_blank">table</a> found on Wikipedia. I was inspired to one day try it out myself and I think this is a great opportunity to implement it.</p>
 <div id="web-scrape" class="section level3">
 <h3>Web Scrape</h3>
